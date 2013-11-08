@@ -1,6 +1,6 @@
 package com.indivisible.mightyv.data;
 
-public class Series {
+public class Show {
 
 	//// data
 	
@@ -21,12 +21,12 @@ public class Series {
 	
 	//// constructors
 	
-	public Series()
+	public Show()
 	{
 		// default
 	}
 	
-	public Series(int rageID, String title, String status)
+	public Show(int rageID, String title, String status)
 	{
 		this.rageID = rageID;
 		this.title  = title;
