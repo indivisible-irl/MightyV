@@ -2,7 +2,9 @@ package com.indivisible.mightyv.data;
 
 public class Show {
 
-	//// data
+	//=================================================//
+	//		data
+	//=================================================//
 	
 	private int    rageID;					// always int?
 //	private String rageLink;			// full link or tail end? can create with id??
@@ -18,8 +20,9 @@ public class Show {
 	
 //	private boolean starred;
 	
-	
-	//// constructors
+	//=================================================//
+	//		constructors
+	//=================================================//
 	
 	public Show()
 	{
@@ -33,8 +36,9 @@ public class Show {
 		this.status = status;
 	}
 	
-	
-	//// gets & sets
+	//=================================================//
+	//		gets & sets
+	//=================================================//
 	
 	public int getRageID()
 	{
@@ -64,4 +68,5 @@ public class Show {
 	}
 	
 	
+	//=================================================//
 }

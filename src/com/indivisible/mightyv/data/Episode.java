@@ -2,7 +2,9 @@ package com.indivisible.mightyv.data;
 
 public class Episode {
 
-	//// data
+	//=================================================//
+	//		data
+	//=================================================//
 	
 	private int seasonNum;
 	private int episodeNum;
@@ -12,8 +14,9 @@ public class Episode {
 	
 //	private boolean watched;
 	
-	
-	//// constructors
+	//=================================================//
+	//		constructors
+	//=================================================//
 	
 	public Episode()
 	{
@@ -26,8 +29,9 @@ public class Episode {
 		this.title = title;
 	}
 	
-	
-	//// gets & sets
+	//=================================================//
+	//		gets & sets
+	//=================================================//
 	
 	public int getSeasonNum()
 	{
@@ -56,4 +60,5 @@ public class Episode {
 		this.title = title;
 	}
 	
+	//=================================================//
 }
