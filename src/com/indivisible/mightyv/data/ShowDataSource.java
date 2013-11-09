@@ -109,11 +109,26 @@ public class ShowDataSource {
 	public int updateShow(Show show)
 	{
 		ContentValues values = getValuesFromShow(show);
+		//TODO start a db transaction here to ensure no more than one row is changed
 		int rowsAffected = db.update(
 				DatabaseOpenHelper.TABLE_SHOWS,
 				values,
-				DatabaseOpenHelper.COL_KEY +" = ?",
-				new String[] { Long.toString(show.getKey()) });
+				DatabaseOpenHelper.COL_KEY +" = "+ show.getKey(),
+				null);
+		if (rowsAffected == 0)
+		{
+			if (MyLog.error) MyLog.e(TAG, "Attempted but failed to update Show: "
+					+show.getKey()+ " - " +show.getTitle());
+		}
+		else if (rowsAffected == 1)
+		{
+			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +show.getKey());
+		}
+		else
+		{
+			if (MyLog.error) MyLog.e(TAG, "Failed horribly while attempting to update Show: "
+					+show.getKey()+ " - " +show.getTitle());
+		}
 		return rowsAffected;
 	}
 	
@@ -122,24 +137,21 @@ public class ShowDataSource {
 		//TODO start a db transaction here to ensure no more than one row is deleted
 		int rowsAffected = db.delete(
 				DatabaseOpenHelper.TABLE_SHOWS, 
-				DatabaseOpenHelper.COL_KEY +" = ?",
-				new String[] { Long.toString(showKey )});
+				DatabaseOpenHelper.COL_KEY +" = "+ showKey,
+				null);
 		if (rowsAffected == 0)
 		{
 			if (MyLog.warn) MyLog.w(TAG, "Attempted to delete Show. No Show deleted. ShowKey: " +showKey);
-			//TODO revert transaction
 			return false;
 		}
 		else if (rowsAffected == 1)
 		{
 			if (MyLog.info) MyLog.i(TAG, "Deleted Show with Key: " +showKey);
-			//TODO commit transaction
 			return true;
 		}
 		else
 		{
 			if (MyLog.error) MyLog.e(TAG, "Attempted deletion of Show resulted in multiple affected rows. ShowKey: " +showKey);
-			//TODO revert transaction
 			return false;
 		}
 				
