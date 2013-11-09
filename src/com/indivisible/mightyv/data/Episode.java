@@ -6,6 +6,7 @@ public class Episode {
 	//		data
 	//=================================================//
 	
+	private long _id;
 	private int seasonNum;
 	private int episodeNum;
 	private String title;
@@ -29,9 +30,26 @@ public class Episode {
 		this.title = title;
 	}
 	
+	public Episode(long _id, int seasonNum, int episodeNum, String title)
+	{
+		this._id = _id;
+		this.seasonNum = seasonNum;
+		this.episodeNum = episodeNum;
+		this.title = title;
+	}
+	
 	//=================================================//
 	//		gets & sets
 	//=================================================//
+	
+	public long getID()
+	{
+		return this._id;
+	}
+	public void setID(long _id)
+	{
+		this._id = _id;
+	}
 	
 	public int getSeasonNum()
 	{

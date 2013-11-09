@@ -6,7 +6,8 @@ public class Show {
 	//		data
 	//=================================================//
 	
-	private int    rageID;					// always int?
+	private long   _id;					// db table row id
+	private int    rageID;				// always int?
 //	private String rageLink;			// full link or tail end? can create with id??
 	private String title;
 //	private String country;				// show flags? need source (gather possible codes)
@@ -16,7 +17,7 @@ public class Show {
 //	private String[] genres;			// move to own table and link int[] FK (add as discovered - remove when unused after delete)
 //	private String runtime;				// care?
 	
-//	private String seriesImg;			// need a source for these (tvrage/feeds/full_show_info.php? : Show/image) resize
+//	private String seriesImg;			// need a source for these (tvrage/feeds/full_show_info.php? : Show/image)  //REM resize images
 	
 //	private boolean starred;
 	
@@ -36,9 +37,26 @@ public class Show {
 		this.status = status;
 	}
 	
+	public Show(long _id, int rageID, String title, String status)
+	{
+		this._id    = _id;
+		this.rageID = rageID;
+		this.title  = title;
+		this.status = status;
+	}
+	
 	//=================================================//
 	//		gets & sets
 	//=================================================//
+	
+	public long getID()
+	{
+		return this._id;
+	}
+	public void setID(long _id)
+	{
+		this._id = _id;
+	}
 	
 	public int getRageID()
 	{

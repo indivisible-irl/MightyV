@@ -2,11 +2,17 @@ package com.indivisible.mightyv.util;
 
 import android.util.Log;
 
+//REM level checks to be done inline on call of these methods
+
 public class Logging
 {
+	//=================================================//
+	//		data
+	//=================================================//
 	
-	//REM level checks to be done inline on call of these methods
-
+	// log tag prefix
+	private static final String TAG_PREFIX = "MightyV:";
+	
 	// application wide logging level
 	public static final int LOG_LEVEL = 10;		// set to -1 to disable all logging (should even be possible??)
 	
@@ -28,8 +34,11 @@ public class Logging
 		levelWTF
 	};
 	
-	// log tag prefix
-	private static final String TAG_PREFIX = "MightyV:";
+	
+	
+	//=================================================//
+	//		calls to Android logging
+	//=================================================//
 	
 	// perform logging.
 	public static void d(String tag, String msg)
@@ -58,6 +67,10 @@ public class Logging
 	}
 	
 	
+	//=================================================//
+	//		custom methods
+	//=================================================//
+	
 	// format tag for log entry
 	private static final String formattedTag(String tag)
 	{
@@ -65,4 +78,5 @@ public class Logging
 	}
 	
 	
+	//=================================================//
 }
