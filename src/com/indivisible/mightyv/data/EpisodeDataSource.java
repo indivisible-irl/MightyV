@@ -73,7 +73,9 @@ public class EpisodeDataSource {
 		long episodeKey = db.insert(DatabaseOpenHelper.TABLE_EPISODES, null, values);
 		
 		// retrieve saved show and return
-		return getEpisodeByKey(episodeKey);
+		Episode newEpisode =  getEpisodeByKey(episodeKey);
+		if (MyLog.verbose) MyLog.v(TAG, "Created new Episode: " +newEpisode.toString());
+		return newEpisode;
 	}
 	
 	public Episode getEpisodeByKey(long episodeKey)
@@ -84,40 +86,41 @@ public class EpisodeDataSource {
 				DatabaseOpenHelper.COL_KEY +" = "+ episodeKey,
 				null, null, null, null);
 		Episode episode = cursorToEpisode(cursor);
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Episode from db: " +episode.toString());
 		return episode;
 	}
 	
 	// future methods
 	public Episode __getLatestEpisode() {return null;}
+	public Episode __getNextUnreleasedEpisode() {return null;}
 	public Episode __getLastWatchedEpisode() {return null;}
 	public Episode __getNextUnwatchedEpisode() {return null;}
-	public Episode __getNextUnreleasedEpisode() {return null;}
 	
-	public int updateEpisode(Episode episode)
+	public boolean updateEpisode(Episode episode)
 	{
 		ContentValues values = getValuesFromEpisode(episode);
 		
 		//TODO start a db transaction here to ensure only one Episode/row is updated
-		int numRowsAffected = db.update(
+		int rowsAffected = db.update(
 				DatabaseOpenHelper.TABLE_EPISODES,
 				values,
 				DatabaseOpenHelper.COL_KEY +" = "+ episode.getKey(),
 				null);
-		if (numRowsAffected == 0)
+		if (rowsAffected == 1)
 		{
-			if (MyLog.error) MyLog.e(TAG, "Attempted but failed to update Episode: "
-					+episode.getKey()+ " - " +episode.getTitle());
-		}
-		else if (numRowsAffected == 1)
-		{
-			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +episode.getKey());
+			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +episode.toString());
+			return true;
 		}
 		else
 		{
-			if (MyLog.error) MyLog.e(TAG, "Failed horribly while attempting to save Episode: "
-					+episode.getKey()+ " - " +episode.getTitle());
+			if (MyLog.error)
+			{
+				MyLog.e(TAG, "Failed horribly while attempting to save Episode: " +episode.toString());
+				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+			}
+			return false;
 		}
-		return numRowsAffected;
 	}
 	
 	public boolean deleteEpisode(long episodeKey)
@@ -139,7 +142,11 @@ public class EpisodeDataSource {
 		}
 		else
 		{
-			if (MyLog.error) MyLog.e(TAG, "Attempted deletion of Episode resulted in multiple affected rows. episodeKey: " +episodeKey);
+			if (MyLog.error)
+			{
+				MyLog.e(TAG, "Tried to delete Episode. Messed it up big time. episodeKey: " +episodeKey);
+				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+			}
 			return false;
 		}
 				

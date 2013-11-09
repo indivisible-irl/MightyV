@@ -75,7 +75,9 @@ public class ShowDataSource {
 		long showKey = db.insert(DatabaseOpenHelper.TABLE_SHOWS, null, values);
 		
 		// retrieve saved show and return
-		return getShowByKey(showKey);
+		Show newShow = getShowByKey(showKey);
+		if (MyLog.info) MyLog.i(TAG, "Created new Show: " +newShow.toString());
+		return newShow;
 	}
 	
 	public Show getShowByKey(long showKey)
@@ -87,8 +89,9 @@ public class ShowDataSource {
 		        null, null, null, null);
 		cursor.moveToFirst();
 		Show foundShow = cursorToShow(cursor);
-		
 		cursor.close();
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using showKey: " +foundShow.toString());
 		return foundShow;
 	}
 	
@@ -101,12 +104,13 @@ public class ShowDataSource {
 				null, null, null, null);
 		cursor.moveToFirst();
 		Show foundShow = cursorToShow(cursor);
-		
 		cursor.close();
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using RageID: " +foundShow.toString());
 		return foundShow;
 	}
 	
-	public int updateShow(Show show)
+	public boolean updateShow(Show show)
 	{
 		ContentValues values = getValuesFromShow(show);
 		//TODO start a db transaction here to ensure no more than one row is changed
@@ -115,21 +119,20 @@ public class ShowDataSource {
 				values,
 				DatabaseOpenHelper.COL_KEY +" = "+ show.getKey(),
 				null);
-		if (rowsAffected == 0)
+		if (rowsAffected == 1)
 		{
-			if (MyLog.error) MyLog.e(TAG, "Attempted but failed to update Show: "
-					+show.getKey()+ " - " +show.getTitle());
-		}
-		else if (rowsAffected == 1)
-		{
-			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +show.getKey());
+			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +show.toString());
+			return true;
 		}
 		else
 		{
-			if (MyLog.error) MyLog.e(TAG, "Failed horribly while attempting to update Show: "
-					+show.getKey()+ " - " +show.getTitle());
+			if (MyLog.error)
+			{
+				MyLog.e(TAG, "Attempted but failed to update Show: " +show.toString());
+				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+			}
+			return false;
 		}
-		return rowsAffected;
 	}
 	
 	public boolean deleteShow(long showKey)
@@ -139,22 +142,20 @@ public class ShowDataSource {
 				DatabaseOpenHelper.TABLE_SHOWS, 
 				DatabaseOpenHelper.COL_KEY +" = "+ showKey,
 				null);
-		if (rowsAffected == 0)
-		{
-			if (MyLog.warn) MyLog.w(TAG, "Attempted to delete Show. No Show deleted. ShowKey: " +showKey);
-			return false;
-		}
-		else if (rowsAffected == 1)
+		if (rowsAffected == 1)
 		{
 			if (MyLog.info) MyLog.i(TAG, "Deleted Show with Key: " +showKey);
 			return true;
 		}
 		else
 		{
-			if (MyLog.error) MyLog.e(TAG, "Attempted deletion of Show resulted in multiple affected rows. ShowKey: " +showKey);
+			if (MyLog.error)
+			{
+				MyLog.e(TAG, "Tried to delete Show. Couldn't do it. ShowKey: " +showKey);
+				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+			}
 			return false;
-		}
-				
+		}				
 	}
 	
 	
