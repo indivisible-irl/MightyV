@@ -4,19 +4,24 @@ public class Convert {
 
 	private static final String TAG = "Convert";
 	
+	/**
+	 * Convert a String to an int. Returns null on error. (Catch)
+	 * @param str
+	 * @return
+	 */
 	public static final int stringToInt(String str)
 	{
 		Integer num = null;
 		try
 		{
-			Integer.parseInt(str);
+			num = Integer.parseInt(str);
+			return num;
 		}
 		catch (NumberFormatException e)
 		{
-			Logging.e(TAG, "Failed to convert String to int: " +str);
+			MyLog.e(TAG, "Failed to convert String to int: " +str);
 		}
 
-		
 		return num;
 	}
 }

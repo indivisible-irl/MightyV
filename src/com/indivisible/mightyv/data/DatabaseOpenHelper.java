@@ -1,6 +1,6 @@
 package com.indivisible.mightyv.data;
 
-import com.indivisible.mightyv.util.Logging;
+import com.indivisible.mightyv.util.MyLog;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -15,11 +15,11 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	// log tag  (using manual TAG as simpler for static class)
 	private static final String TAG = "DatabaseOpenHelper";
 	// database details	
-	private static final String DATABASE_NAME    = "mightyv.db";
+	private static final String DATABASE_NAME    = "mightyv_shows.db";
 	private static final int    DATABASE_VERSION = 1;
 	
 	// table - common
-	public static final String COL_ID    = "_id";
+	public static final String COL_KEY    = "_id";
 	public static final String COL_TITLE = "title";
 	
 	// table - Shows
@@ -29,6 +29,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	
 	// table - Episodes
 	public static final String TABLE_EPISODES  = "episodes";
+	public static final String COL_SHOW_FK    = "fk_show";
 	public static final String COL_NUM_SEASON  = "num_season";
 	public static final String COL_NUM_EPISODE = "num_episode";
 	
@@ -38,16 +39,17 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	//=================================================//
 	
 	private static final String CREATE_TABLE_SHOWS = "create table "
-			+ TABLE_SHOWS + "(" 
-			+ COL_ID +     " integer primary key autoincrement, "
-			+ COL_RAGEID + " integer not null, "
-			+ COL_STATUS + " text "
+			+TABLE_SHOWS+ "(" 
+			+COL_KEY+     " integer primary key autoincrement, "
+			+COL_RAGEID+  " integer not null, "
+			+COL_STATUS+  " text "
 			+");";
 	private static final String CREATE_TABLE_EPISODES = "create table "
-			+ TABLE_EPISODES + "(" 
-			+ COL_ID +          " integer primary key autoincrement, "
-			+ COL_NUM_SEASON  + " integer not null, "
-			+ COL_NUM_EPISODE + " integer not null "
+			+TABLE_EPISODES+  "(" 
+			+COL_KEY +        " integer primary key autoincrement, "
+			+COL_SHOW_FK+     "integer not null, "
+			+COL_NUM_SEASON+  " integer not null, "
+			+COL_NUM_EPISODE+ " integer not null "
 			+");";
 	
 	//=================================================//
@@ -76,10 +78,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
-		if (Logging.warn)
+		if (MyLog.warn)
 		{
-			Logging.i(TAG, String.format("Upgrading database from v{0} to v{1}", oldVersion, newVersion));
-			Logging.w(TAG, "!! Recreating empty database as still in dev at this time");
+			MyLog.i(TAG, String.format("Upgrading database from v{0} to v{1}", oldVersion, newVersion));
+			MyLog.w(TAG, "!! Recreating empty database as still in dev at this time");
 		}
 		// for now (dev) let's just delete and recreate the whole database
 		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SHOWS);

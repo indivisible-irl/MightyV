@@ -1,6 +1,6 @@
 package com.indivisible.mightyv.data;
 
-import com.indivisible.mightyv.util.Logging;
+import com.indivisible.mightyv.util.MyLog;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,7 +18,7 @@ public class ShowDataSource {
 	private SQLiteDatabase db = null;
 	private DatabaseOpenHelper dbHelper = null;
 	private static final String[] allColumns = { 
-			DatabaseOpenHelper.COL_ID,
+			DatabaseOpenHelper.COL_KEY,
 			DatabaseOpenHelper.COL_RAGEID,
 			DatabaseOpenHelper.COL_STATUS,
 			DatabaseOpenHelper.COL_TITLE
@@ -40,14 +40,22 @@ public class ShowDataSource {
 	//		open & close db handle
 	//=================================================//
 	
-	public void open() throws SQLException
+	public void openReadable() throws SQLException
+	{
+		db = dbHelper.getReadableDatabase();
+		if (MyLog.verbose) MyLog.v(TAG, "Opened readable database");
+	}
+	
+	public void openWritable() throws SQLException
 	{
 		db = dbHelper.getWritableDatabase();
+		if (MyLog.verbose) MyLog.v(TAG, "Opened writable database");
 	}
 
 	public void close()
 	{ 
-		if (dbHelper != null) { 
+		if (dbHelper != null) {
+			if (MyLog.verbose) MyLog.v(TAG, "Closed db handle");
 			dbHelper.close();
 		}
 	}
@@ -75,7 +83,7 @@ public class ShowDataSource {
 		Cursor cursor = db.query(
 				DatabaseOpenHelper.TABLE_SHOWS,
 		        allColumns,
-		        DatabaseOpenHelper.COL_ID +" = "+ showKey,
+		        DatabaseOpenHelper.COL_KEY +" = "+ showKey,
 		        null, null, null, null);
 		cursor.moveToFirst();
 		Show foundShow = cursorToShow(cursor);
@@ -104,7 +112,7 @@ public class ShowDataSource {
 		int rowsAffected = db.update(
 				DatabaseOpenHelper.TABLE_SHOWS,
 				values,
-				DatabaseOpenHelper.COL_ID +" = ?",
+				DatabaseOpenHelper.COL_KEY +" = ?",
 				new String[] { Long.toString(show.getKey()) });
 		return rowsAffected;
 	}
@@ -114,23 +122,23 @@ public class ShowDataSource {
 		//TODO start a db transaction here to ensure no more than one row is deleted
 		int rowsAffected = db.delete(
 				DatabaseOpenHelper.TABLE_SHOWS, 
-				DatabaseOpenHelper.COL_ID +" = ?",
+				DatabaseOpenHelper.COL_KEY +" = ?",
 				new String[] { Long.toString(showKey )});
 		if (rowsAffected == 0)
 		{
-			Logging.w(TAG, "Attempted to delete Show. No Show deleted. ShowKey: " +showKey);
+			if (MyLog.warn) MyLog.w(TAG, "Attempted to delete Show. No Show deleted. ShowKey: " +showKey);
 			//TODO revert transaction
 			return false;
 		}
 		else if (rowsAffected == 1)
 		{
-			Logging.i(TAG, "Deleted Show with Key: " +showKey);
+			if (MyLog.info) MyLog.i(TAG, "Deleted Show with Key: " +showKey);
 			//TODO commit transaction
 			return true;
 		}
 		else
 		{
-			Logging.e(TAG, "Attempted deletion of Show resulted in multiple affected rows. ShowKey: " +showKey);
+			if (MyLog.error) MyLog.e(TAG, "Attempted deletion of Show resulted in multiple affected rows. ShowKey: " +showKey);
 			//TODO revert transaction
 			return false;
 		}
@@ -139,13 +147,13 @@ public class ShowDataSource {
 	
 	
 	//=================================================//
-	//		methods
+	//		public methods
 	//=================================================//
 	
 	private static Show cursorToShow(Cursor cursor)
 	{
 		Show show = new Show();
-		show.setID(cursor.getLong(0));
+		show.setKey(cursor.getLong(0));
 		show.setRageID(cursor.getInt(1));
 		show.setStatus(cursor.getString(2));
 		show.setTitle(cursor.getString(3));

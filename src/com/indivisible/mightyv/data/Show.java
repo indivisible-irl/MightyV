@@ -53,7 +53,7 @@ public class Show {
 	{
 		return this.key;
 	}
-	public void setID(long key)
+	public void setKey(long key)
 	{
 		this.key = key;
 	}

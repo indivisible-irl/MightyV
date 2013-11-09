@@ -6,7 +6,8 @@ public class Episode {
 	//		data
 	//=================================================//
 	
-	private long _id;
+	private long episodeKey;	// use DAO to ensure always exists in db and has epKey set 
+	private long showKey;
 	private int seasonNum;
 	private int episodeNum;
 	private String title;
@@ -23,16 +24,18 @@ public class Episode {
 	{
 		//default
 	}
-	public Episode(int seasonNum, int episodeNum, String title)
+	public Episode(long showKey, int seasonNum, int episodeNum, String title)
 	{
+		this.showKey = showKey;
 		this.seasonNum = seasonNum;
 		this.episodeNum = episodeNum;
 		this.title = title;
 	}
 	
-	public Episode(long _id, int seasonNum, int episodeNum, String title)
+	public Episode(long episodeKey, long showKey, int seasonNum, int episodeNum, String title)
 	{
-		this._id = _id;
+		this.episodeKey = episodeKey;
+		this.showKey = showKey;
 		this.seasonNum = seasonNum;
 		this.episodeNum = episodeNum;
 		this.title = title;
@@ -42,13 +45,22 @@ public class Episode {
 	//		gets & sets
 	//=================================================//
 	
-	public long getID()
+	public long getKey()
 	{
-		return this._id;
+		return this.episodeKey;
 	}
-	public void setID(long _id)
+	public void setKey(long episodeKey)
 	{
-		this._id = _id;
+		this.episodeKey = episodeKey;
+	}
+	
+	public long getParentKey()
+	{
+		return this.showKey;
+	}
+	public void setParentKey(long showKey)
+	{
+		this.showKey = showKey;
 	}
 	
 	public int getSeasonNum()

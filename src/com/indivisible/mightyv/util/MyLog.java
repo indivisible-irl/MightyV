@@ -4,7 +4,7 @@ import android.util.Log;
 
 //REM level checks to be done inline on call of these methods
 
-public class Logging
+public class MyLog
 {
 	//=================================================//
 	//		data
