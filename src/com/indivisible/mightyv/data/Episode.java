@@ -6,11 +6,11 @@ public class Episode {
 	//		data
 	//=================================================//
 	
-	private long episodeKey;	// use DAO to ensure always exists in db and has epKey set 
-	private long showKey;
-	private int seasonNum;
-	private int episodeNum;
-	private String title;
+	private long episodeKey = -1;	// use DAO to ensure always exists in db and has epKey set 
+	private long showKey = -1;
+	private int seasonNum = -1;
+	private int episodeNum = -1;
+	private String title = null;
 //	private String aired;
 //	private String tvrageLink;
 	
@@ -88,6 +88,57 @@ public class Episode {
 	public void setTitle(String title)
 	{
 		this.title = title;
+	}
+	
+	
+	//=================================================//
+	//		public methods
+	//=================================================//
+	
+	@Override
+	public String toString()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		if (this.episodeKey != -1)
+		{
+			sb.append(episodeKey).append(": ");
+		}
+		else
+		{
+			sb.append("NA: ");
+		}
+		
+		if (this.seasonNum != -1)
+		{
+			sb.append(this.seasonNum).append("/");
+		}
+		else
+		{
+			sb.append("-").append("/");
+		}
+		
+		if (this.episodeNum != -1)
+		{
+			sb.append(this.episodeNum).append(": ");
+		}
+		else
+		{
+			sb.append("-").append(": ");
+		}
+		
+		if (this.title != null || this.title.equals(""))
+		{
+			sb.append(this.title);
+		}
+		else
+		{
+			sb.append("NO TITLE");
+		}
+		
+		
+		
+		return sb.toString();
 	}
 	
 	//=================================================//
