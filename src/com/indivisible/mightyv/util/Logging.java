@@ -2,7 +2,8 @@ package com.indivisible.mightyv.util;
 
 import android.util.Log;
 
-public class Logging {
+public class Logging
+{
 	
 	//REM level checks to be done inline on call of these methods
 
