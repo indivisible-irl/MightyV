@@ -6,15 +6,15 @@ public class Show {
 	//		data
 	//=================================================//
 	
-	private long   _id;					// db table row id
-	private int    rageID;				// always int?
-//	private String rageLink;			// full link or tail end? can create with id??
+	private long   key;					// db table row id (primary key)
+	private int    rageID;				// always int?  //TODO test all rageIDs for possible types
+//	private String rageLink;			// full link or tail end? can create with id??  //TODO research this
 	private String title;
-//	private String country;				// show flags? need source (gather possible codes)
-//	private String started;				// just year
-//	private String ended;				// just year
-	private String status;				// map status to traffic light icons for list display (gather possible options)
-//	private String[] genres;			// move to own table and link int[] FK (add as discovered - remove when unused after delete)
+//	private String country;				// show flags? need source //TODO gather all possible codes
+//	private String started;				// just year?
+//	private String ended;				// just year.
+	private String status;				// map status to traffic light icons for list display //TODO gather possible options
+//	private String[] genres;			// move to own table and link int[] FK (add as discovered - remove when unused after a delete?)
 //	private String runtime;				// care?
 	
 //	private String seriesImg;			// need a source for these (tvrage/feeds/full_show_info.php? : Show/image)  //REM resize images
@@ -37,9 +37,9 @@ public class Show {
 		this.status = status;
 	}
 	
-	public Show(long _id, int rageID, String title, String status)
+	public Show(long key, int rageID, String title, String status)
 	{
-		this._id    = _id;
+		this.key    = key;
 		this.rageID = rageID;
 		this.title  = title;
 		this.status = status;
@@ -49,13 +49,13 @@ public class Show {
 	//		gets & sets
 	//=================================================//
 	
-	public long getID()
+	public long getKey()
 	{
-		return this._id;
+		return this.key;
 	}
-	public void setID(long _id)
+	public void setID(long key)
 	{
-		this._id = _id;
+		this.key = key;
 	}
 	
 	public int getRageID()

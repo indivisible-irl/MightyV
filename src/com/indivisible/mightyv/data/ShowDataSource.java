@@ -1,5 +1,7 @@
 package com.indivisible.mightyv.data;
 
+import com.indivisible.mightyv.util.Logging;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -12,6 +14,7 @@ public class ShowDataSource {
 	//		data
 	//=================================================//
 	
+	private String TAG;
 	private SQLiteDatabase db = null;
 	private DatabaseOpenHelper dbHelper = null;
 	private static final String[] allColumns = { 
@@ -28,6 +31,7 @@ public class ShowDataSource {
 	
 	public ShowDataSource(Context context)
 	{
+		TAG = this.getClass().getSimpleName();
 		dbHelper = new DatabaseOpenHelper(context);
 	}
 	
@@ -60,20 +64,77 @@ public class ShowDataSource {
 		values.put(DatabaseOpenHelper.COL_RAGEID, rageID);
 		values.put(DatabaseOpenHelper.COL_STATUS, status);
 		values.put(DatabaseOpenHelper.COL_TITLE, title);
-		long showID = db.insert(DatabaseOpenHelper.TABLE_SHOWS, null, values);
+		long showKey = db.insert(DatabaseOpenHelper.TABLE_SHOWS, null, values);
 		
 		// retrieve saved show and return
+		return getShowByKey(showKey);
+	}
+	
+	public Show getShowByKey(long showKey)
+	{
 		Cursor cursor = db.query(
 				DatabaseOpenHelper.TABLE_SHOWS,
 		        allColumns,
-		        DatabaseOpenHelper.COL_ID + " = " + showID,
+		        DatabaseOpenHelper.COL_ID +" = "+ showKey,
 		        null, null, null, null);
 		cursor.moveToFirst();
-		Show newShow = cursorToShow(cursor);
+		Show foundShow = cursorToShow(cursor);
 		
 		cursor.close();
-		return newShow;
+		return foundShow;
+	}
+	
+	public Show getShowByRageID(int rageID)
+	{
+		Cursor cursor = db.query(
+				DatabaseOpenHelper.TABLE_SHOWS,
+				allColumns,
+				DatabaseOpenHelper.COL_RAGEID +" = "+ rageID,
+				null, null, null, null);
+		cursor.moveToFirst();
+		Show foundShow = cursorToShow(cursor);
 		
+		cursor.close();
+		return foundShow;
+	}
+	
+	public int updateShow(Show show)
+	{
+		ContentValues values = getValuesFromShow(show);
+		int rowsAffected = db.update(
+				DatabaseOpenHelper.TABLE_SHOWS,
+				values,
+				DatabaseOpenHelper.COL_ID +" = ?",
+				new String[] { Long.toString(show.getKey()) });
+		return rowsAffected;
+	}
+	
+	public boolean deleteShow(long showKey)
+	{
+		//TODO start a db transaction here to ensure no more than one row is deleted
+		int rowsAffected = db.delete(
+				DatabaseOpenHelper.TABLE_SHOWS, 
+				DatabaseOpenHelper.COL_ID +" = ?",
+				new String[] { Long.toString(showKey )});
+		if (rowsAffected == 0)
+		{
+			Logging.w(TAG, "Attempted to delete Show. No Show deleted. ShowKey: " +showKey);
+			//TODO revert transaction
+			return false;
+		}
+		else if (rowsAffected == 1)
+		{
+			Logging.i(TAG, "Deleted Show with Key: " +showKey);
+			//TODO commit transaction
+			return true;
+		}
+		else
+		{
+			Logging.e(TAG, "Attempted deletion of Show resulted in multiple affected rows. ShowKey: " +showKey);
+			//TODO revert transaction
+			return false;
+		}
+				
 	}
 	
 	
@@ -89,6 +150,15 @@ public class ShowDataSource {
 		show.setStatus(cursor.getString(2));
 		show.setTitle(cursor.getString(3));
 		return show;
+	}
+	
+	private static ContentValues getValuesFromShow(Show show)
+	{
+		ContentValues values = new ContentValues();
+		values.put(DatabaseOpenHelper.COL_RAGEID, show.getRageID());
+		values.put(DatabaseOpenHelper.COL_STATUS, show.getStatus());
+		values.put(DatabaseOpenHelper.COL_TITLE, show.getTitle());
+		return values;
 	}
 	
 	
