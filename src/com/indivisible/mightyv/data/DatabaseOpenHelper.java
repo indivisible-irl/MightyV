@@ -6,14 +6,21 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
+//TODO Make more specific - will have multiple db files so generic names won't work
+
+/**
+ * Class to take care of database creation, upgrade and naming for the "Media" database
+ * @author indivisible
+ */
 public class DatabaseOpenHelper extends SQLiteOpenHelper
 {
 	//=================================================//
 	//		data
 	//=================================================//
 	
-	// log tag  (using manual TAG as simpler for static class)
+	// log tag  (using manual TAG here as simpler for static classes)
 	private static final String TAG = "DatabaseOpenHelper";
+	
 	// database details	
 	private static final String DATABASE_NAME    = "mightyv_shows.db";
 	private static final int    DATABASE_VERSION = 1;
@@ -56,6 +63,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	//		constructors
 	//=================================================//
 	
+	/**
+	 * Class to take care of database creation, upgrade and naming for the "Media" database
+	 * @param context Android ApplicationContext (do not use ActivityContext)
+	 */
 	public DatabaseOpenHelper(Context context)
 	{
 	    super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -65,7 +76,10 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	//=================================================//
 	//		onCreate
 	//=================================================//
+	//TODO test what happens on corrupt/malformed db file
 	
+	// run when db doesn't exist 
+	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
 		db.execSQL(CREATE_TABLE_SHOWS);
@@ -76,6 +90,8 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	//		onUpgrade
 	//=================================================//
 	
+	// run when database version number has been incremented [++] (can never decrement [--])
+	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion)
 	{
 		if (MyLog.warn)
@@ -83,7 +99,9 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 			MyLog.i(TAG, String.format("Upgrading database from v{0} to v{1}", oldVersion, newVersion));
 			MyLog.w(TAG, "!! Recreating empty database as still in dev at this time");
 		}
-		// for now (dev) let's just delete and recreate the whole database
+		// for now (development) let's just delete and recreate the whole database
+		//   will eventually have methods to gracefully update/migrate database contents when going live
+		//   may add some methods to populate the db with test data once I reach that point
 		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SHOWS);
 		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_EPISODES);
 	}

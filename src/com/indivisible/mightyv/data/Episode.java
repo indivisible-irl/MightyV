@@ -1,37 +1,49 @@
 package com.indivisible.mightyv.data;
 
+/**
+ * Class to represent a TV Show's single episode
+ * @author indivisible
+ */
 public class Episode {
 
 	//=================================================//
 	//		data
 	//=================================================//
 	
-	private long episodeKey = -1;	// use DAO to ensure always exists in db and has epKey set 
-	private long showKey = -1;
-	private int seasonNum = -1;
-	private int episodeNum = -1;
-	private String title = null;
+	// init with default values for toString() method testing
+	private long episodeKey = -1;	//DONE use DAO to ensure always exists in db and has epKey set 
+	private long showKey    = -1;
+	private int seasonNum   = -1;	//TODO run through TVRage entries to test for non integer values
+									//ASK use 0 for specials and out of season airings? Order after
+	private int episodeNum  = -1;	//todo same as for seasonNum
+	private String title    = null;
 //	private String aired;
 //	private String tvrageLink;
 	
 //	private boolean watched;
 	
+	//TODO private static final Strings used in String.formats for display in various places or user preferences
+	
 	//=================================================//
 	//		constructors
 	//=================================================//
 	
+	/**
+	 * Create an empty Episode object. Fairly useless as it is though.
+	 */
 	public Episode()
 	{
-		//default
-	}
-	public Episode(long showKey, int seasonNum, int episodeNum, String title)
-	{
-		this.showKey = showKey;
-		this.seasonNum = seasonNum;
-		this.episodeNum = episodeNum;
-		this.title = title;
+		// default constructor
 	}
 	
+	/**
+	 * Create a new Object to represent a single Show's episode 
+	 * @param episodeKey 	Episode's database Primary Key identifier
+	 * @param showKey 		Episode's parent Show's Primary Key (Foreign Key here)
+	 * @param seasonNum 	Season number Episode belongs to
+	 * @param episodeNum	Episode number of Episode within season
+	 * @param title			Episode's full title
+	 */
 	public Episode(long episodeKey, long showKey, int seasonNum, int episodeNum, String title)
 	{
 		this.episodeKey = episodeKey;
@@ -45,46 +57,85 @@ public class Episode {
 	//		gets & sets
 	//=================================================//
 	
+	/**
+	 *  Get the Episode's unique identifier
+	 * @return Episode's Primary Key
+	 */
 	public long getKey()
 	{
 		return this.episodeKey;
 	}
+	/**
+	 * Set the Episode's unique database identifier
+	 * @param episodeKey Episode's primary Key
+	 */
 	public void setKey(long episodeKey)
 	{
 		this.episodeKey = episodeKey;
 	}
-	
+	/**
+	 * Get the Episode's parent Show's unique database identifier
+	 * @return parent Show's Primary Key (a Foreign Key from this perspective)
+	 */
 	public long getParentKey()
 	{
 		return this.showKey;
 	}
+	/**
+	 * Set the Episode's parent Show's unique database identifier
+	 * @param showKey The ForeignKey to set as the Episode's parent
+	 */
 	public void setParentKey(long showKey)
 	{
 		this.showKey = showKey;
 	}
 	
+	/**
+	 * Get the Season number that the Episode belongs to
+	 * @return season number (unformatted, raw int)
+	 */
 	public int getSeasonNum()
 	{
 		return this.seasonNum;
 	}
+	/**
+	 * Set the Episode's parent Season's number (raw int)
+	 * @param seasonNum the number of the season the Episode belongs in
+	 */
 	public void setSeasonNum(int seasonNum)
 	{
 		this.seasonNum = seasonNum;
 	}
 	
+	/**
+	 * Get the Episode's number within the parent season
+	 * @return
+	 */
 	public int getEpisodeNum()
 	{
 		return this.episodeNum;
 	}
+	/**
+	 * Set the Episode's number within its parent season
+	 * @param episodeNum
+	 */
 	public void setEpisodeNum(int episodeNum)
 	{
 		this.episodeNum = episodeNum;
 	}
 	
+	/**
+	 * Retrieve the Episode's full title (no number prefix)
+	 * @return Episode title
+	 */
 	public String getTitle()
 	{
 		return this.title;
 	}
+	/**
+	 * Set the Episode's full title
+	 * @param title Episode's title without prefixes or numbering
+	 */
 	public void setTitle(String title)
 	{
 		this.title = title;
@@ -95,6 +146,8 @@ public class Episode {
 	//		public methods
 	//=================================================//
 	
+	// Override the default implementation from java.lang.Object in favour of a custom representation
+	//   Will still be able to return something even if the Episode has no info.
 	@Override
 	public String toString()
 	{
@@ -136,10 +189,9 @@ public class Episode {
 			sb.append("NO TITLE");
 		}
 		
-		
-		
 		return sb.toString();
 	}
+	
 	
 	//=================================================//
 }

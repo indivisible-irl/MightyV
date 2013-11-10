@@ -4,6 +4,13 @@ import android.util.Log;
 
 //REM level checks to be done inline on call of these methods
 
+/**
+ * Wrapper around the inbuilt Android logging allowing for configurable logging levels.
+ * Inline tests for appropriate log level should be made before invoking a call to a log method.
+ * <pre>eg
+ * <code> if (MyLog.info) MyLog.i(tag, msg); </code></pre>
+ * @author indivisible
+ */
 public class MyLog
 {
 	//=================================================//
@@ -13,8 +20,8 @@ public class MyLog
 	// log tag prefix
 	private static final String TAG_PREFIX = "MightyV:";
 	
-	// application wide logging level
-	public static final int LOG_LEVEL = 10;		// set to -1 to disable all logging (should even be possible??)
+	// application wide logging level  //TODO move to Preferences (once they exist [and in an "advanced" section])
+	public static final int LOG_LEVEL = 10;		// set to -1 to disable all logging (not recommended)
 	
 	// logging levels defined
 	public static boolean debug   = LOG_LEVEL > 6;
@@ -24,16 +31,15 @@ public class MyLog
 	public static boolean error   = LOG_LEVEL > 2;
 	public static boolean wtf     = LOG_LEVEL > 1;
 	
-	// enumerator for levels
-	public static enum logLevel {
-		levelDebug,
-		levelVerbose,
-		levelInfo,
-		levelWarn,
-		levelError,
-		levelWTF
-	};
-	
+//	// enumerator for levels. thought I might use it. i didn't
+//	public static enum logLevel {
+//		levelDebug,
+//		levelVerbose,
+//		levelInfo,
+//		levelWarn,
+//		levelError,
+//		levelWTF
+//	};
 	
 	
 	//=================================================//

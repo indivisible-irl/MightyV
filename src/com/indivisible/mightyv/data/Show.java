@@ -10,7 +10,7 @@ public class Show {
 	private int    rageID = -1; 		// always int?  //TODO test all rageIDs for possible types
 //	private String rageLink = null;		// full link or tail end? can create with id??  //TODO research this
 	private String title = null;
-//	private String country = null;		// show flags? need source //TODO gather all possible codes
+//	private String country = null;		// show flags in listview/listings? need imgs  //TODO gather all possible codes
 //	private String started = null;		// just year? use int??
 //	private String ended = null;		// just year.
 	private String status = null;		// map status to traffic light icons for list display //TODO gather possible options
@@ -24,18 +24,21 @@ public class Show {
 	//		constructors
 	//=================================================//
 	
+	/**
+	 * Create an empty Show object
+	 */
 	public Show()
 	{
 		// default
 	}
 	
-	public Show(int rageID, String title, String status)
-	{
-		this.rageID = rageID;
-		this.title  = title;
-		this.status = status;
-	}
-	
+	/**
+	 * Create a new Show object
+	 * @param showKey Show's Primary Key (unique row identifier) within it's database
+	 * @param rageID  TVRage.com's assigned ID for the Show
+	 * @param title   The Show's full title
+	 * @param status  TVRage's status for the Show
+	 */
 	public Show(long showKey, int rageID, String title, String status)
 	{
 		this.showKey = showKey;
@@ -48,37 +51,69 @@ public class Show {
 	//		gets & sets
 	//=================================================//
 	
+	/**
+	 * Get the Show's Primary Key for the corresponding database entry
+	 * @return long of the PrimaryKey
+	 */
 	public long getKey()
 	{
 		return this.showKey;
 	}
-	public void setKey(long key)
+	/**
+	 * Set the Show's unique database identifier
+	 * @param showKey the Show's PrimaryKey
+	 */
+	public void setKey(long showKey)
 	{
-		this.showKey = key;
+		this.showKey = showKey;
 	}
 	
+	/**
+	 * Retrieve the Show's ID as assigned by TVRage.com
+	 * @return TVRage.com identifier
+	 */
 	public int getRageID()
 	{
 		return this.rageID;
 	}
+	/**
+	 * Set the Show's TVRAge ID
+	 * @param rageID TVRage.com's identifier
+	 */
 	public void setRageID(int rageID)
 	{
 		this.rageID = rageID;
 	}
 	
+	/**
+	 * Get the Show's full title
+	 * @return Show title
+	 */
 	public String getTitle()
 	{
 		return this.title;
 	}
+	/**
+	 * Set the Show's full title
+	 * @param title Show title
+	 */
 	public void setTitle(String title)
 	{
 		this.title = title;
 	}
 	
+	/**
+	 * Get the Show's current status according to TVRage.com
+	 * @return Show status
+	 */
 	public String getStatus()
 	{
 		return this.status;
 	}
+	/**
+	 * Set the Show's current status retrieved from TVRage.com
+	 * @param status Show's current status
+	 */
 	public void setStatus(String status)
 	{
 		this.status = status;
@@ -89,6 +124,8 @@ public class Show {
 	//		public methods
 	//=================================================//
 	
+	// Override the default implementation from java.lang.Object in favour of a custom representation
+	//   Will still be able to return something even if the Show has no info.
 	@Override
 	public String toString()
 	{
