@@ -20,12 +20,12 @@ public class ShowDataSource {
 	
 	private String TAG;
 	private SQLiteDatabase db = null;
-	private DatabaseOpenHelper dbHelper = null;
+	private DBMediaOpenHelper dbHelper = null;
 	private static final String[] allColumns = {		//REM update allColumns on activation of new fields
-			DatabaseOpenHelper.COL_KEY,
-			DatabaseOpenHelper.COL_RAGEID,
-			DatabaseOpenHelper.COL_STATUS,
-			DatabaseOpenHelper.COL_TITLE
+			DBMediaOpenHelper.COL_KEY,
+			DBMediaOpenHelper.COL_RAGEID,
+			DBMediaOpenHelper.COL_STATUS,
+			DBMediaOpenHelper.COL_TITLE
 		};
 	
 	
@@ -40,7 +40,7 @@ public class ShowDataSource {
 	public ShowDataSource(Context context)
 	{
 		TAG = this.getClass().getSimpleName();
-		dbHelper = new DatabaseOpenHelper(context);
+		dbHelper = new DBMediaOpenHelper(context);
 	}
 	
 	
@@ -95,10 +95,10 @@ public class ShowDataSource {
 	{
 		// insert and get show's key id
 		ContentValues values = new ContentValues();
-		values.put(DatabaseOpenHelper.COL_RAGEID, rageID);
-		values.put(DatabaseOpenHelper.COL_STATUS, status);
-		values.put(DatabaseOpenHelper.COL_TITLE, title);
-		long showKey = db.insert(DatabaseOpenHelper.TABLE_SHOWS, null, values);
+		values.put(DBMediaOpenHelper.COL_RAGEID, rageID);
+		values.put(DBMediaOpenHelper.COL_STATUS, status);
+		values.put(DBMediaOpenHelper.COL_TITLE, title);
+		long showKey = db.insert(DBMediaOpenHelper.TABLE_SHOWS, null, values);
 		
 		// retrieve saved show and return
 		Show newShow = getShowByKey(showKey);
@@ -114,9 +114,9 @@ public class ShowDataSource {
 	public Show getShowByKey(long showKey)
 	{
 		Cursor cursor = db.query(
-				DatabaseOpenHelper.TABLE_SHOWS,
+				DBMediaOpenHelper.TABLE_SHOWS,
 		        allColumns,
-		        DatabaseOpenHelper.COL_KEY +" = "+ showKey,
+		        DBMediaOpenHelper.COL_KEY +" = "+ showKey,
 		        null, null, null, null);
 		cursor.moveToFirst();
 		//TODO test results of failed retrievals
@@ -135,9 +135,9 @@ public class ShowDataSource {
 	public Show getShowByRageID(int rageID)
 	{
 		Cursor cursor = db.query(
-				DatabaseOpenHelper.TABLE_SHOWS,
+				DBMediaOpenHelper.TABLE_SHOWS,
 				allColumns,
-				DatabaseOpenHelper.COL_RAGEID +" = "+ rageID,
+				DBMediaOpenHelper.COL_RAGEID +" = "+ rageID,
 				null, null, null, null);
 		cursor.moveToFirst();
 		//todo test results of failed retrievals
@@ -158,9 +158,9 @@ public class ShowDataSource {
 		ContentValues values = getValuesFromShow(show);
 		//TODO start a db transaction here to ensure no more than one row is changed
 		int rowsAffected = db.update(
-				DatabaseOpenHelper.TABLE_SHOWS,
+				DBMediaOpenHelper.TABLE_SHOWS,
 				values,
-				DatabaseOpenHelper.COL_KEY +" = "+ show.getKey(),
+				DBMediaOpenHelper.COL_KEY +" = "+ show.getKey(),
 				null);
 		if (rowsAffected == 1)
 		{
@@ -190,8 +190,8 @@ public class ShowDataSource {
 		//FIXME deleting a show should remove all its episodes too
 		//TODO start a db transaction here to ensure no more than one row is deleted
 		int rowsAffected = db.delete(
-				DatabaseOpenHelper.TABLE_SHOWS, 
-				DatabaseOpenHelper.COL_KEY +" = "+ showKey,
+				DBMediaOpenHelper.TABLE_SHOWS, 
+				DBMediaOpenHelper.COL_KEY +" = "+ showKey,
 				null);
 		if (rowsAffected == 1)
 		{
@@ -239,9 +239,9 @@ public class ShowDataSource {
 	private static ContentValues getValuesFromShow(Show show)
 	{
 		ContentValues values = new ContentValues();
-		values.put(DatabaseOpenHelper.COL_RAGEID, show.getRageID());
-		values.put(DatabaseOpenHelper.COL_STATUS, show.getStatus());
-		values.put(DatabaseOpenHelper.COL_TITLE, show.getTitle());
+		values.put(DBMediaOpenHelper.COL_RAGEID, show.getRageID());
+		values.put(DBMediaOpenHelper.COL_STATUS, show.getStatus());
+		values.put(DBMediaOpenHelper.COL_TITLE, show.getTitle());
 		return values;
 	}
 	

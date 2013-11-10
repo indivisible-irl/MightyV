@@ -12,7 +12,7 @@ import android.database.sqlite.SQLiteOpenHelper;
  * Class to take care of database creation, upgrade and naming for the "Media" database
  * @author indivisible
  */
-public class DatabaseOpenHelper extends SQLiteOpenHelper
+public class DBMediaOpenHelper extends SQLiteOpenHelper
 {
 	//=================================================//
 	//		data
@@ -67,7 +67,7 @@ public class DatabaseOpenHelper extends SQLiteOpenHelper
 	 * Class to take care of database creation, upgrade and naming for the "Media" database
 	 * @param context Android ApplicationContext (do not use ActivityContext)
 	 */
-	public DatabaseOpenHelper(Context context)
+	public DBMediaOpenHelper(Context context)
 	{
 	    super(context, DATABASE_NAME, null, DATABASE_VERSION);
 	}

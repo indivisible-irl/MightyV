@@ -20,12 +20,12 @@ public class EpisodeDataSource {
 
 	private String TAG;
 	private SQLiteDatabase db = null;
-	private DatabaseOpenHelper dbHelper = null;
+	private DBMediaOpenHelper dbHelper = null;
 	private String[] allColumns = {						//REM update allColumns on activating new fields
-			DatabaseOpenHelper.COL_KEY,
-			DatabaseOpenHelper.COL_SHOW_FK,
-			DatabaseOpenHelper.COL_NUM_EPISODE,
-			DatabaseOpenHelper.COL_NUM_SEASON
+			DBMediaOpenHelper.COL_KEY,
+			DBMediaOpenHelper.COL_SHOW_FK,
+			DBMediaOpenHelper.COL_NUM_EPISODE,
+			DBMediaOpenHelper.COL_NUM_SEASON
 		};
 
 	
@@ -40,7 +40,7 @@ public class EpisodeDataSource {
 	public EpisodeDataSource(Context context)
 	{
 		TAG = this.getClass().getSimpleName();				// Get the Class's name for use in the logs
-		this.dbHelper = new DatabaseOpenHelper(context); 
+		this.dbHelper = new DBMediaOpenHelper(context); 
 	}
 	
 	
@@ -94,11 +94,11 @@ public class EpisodeDataSource {
 	{
 		// insert and get show's key id
 		ContentValues values = new ContentValues();
-		values.put(DatabaseOpenHelper.COL_SHOW_FK, 	    showKey);
-		values.put(DatabaseOpenHelper.COL_NUM_SEASON,   seasonNum);
-		values.put(DatabaseOpenHelper.COL_NUM_EPISODE,  episodeNum);
-		values.put(DatabaseOpenHelper.COL_TITLE,        title);
-		long episodeKey = db.insert(DatabaseOpenHelper.TABLE_EPISODES, null, values);
+		values.put(DBMediaOpenHelper.COL_SHOW_FK, 	    showKey);
+		values.put(DBMediaOpenHelper.COL_NUM_SEASON,   seasonNum);
+		values.put(DBMediaOpenHelper.COL_NUM_EPISODE,  episodeNum);
+		values.put(DBMediaOpenHelper.COL_TITLE,        title);
+		long episodeKey = db.insert(DBMediaOpenHelper.TABLE_EPISODES, null, values);
 		
 		// retrieve saved show and return
 		Episode newEpisode =  getEpisodeByKey(episodeKey);
@@ -114,9 +114,9 @@ public class EpisodeDataSource {
 	public Episode getEpisodeByKey(long episodeKey)
 	{
 		Cursor cursor = db.query(
-				DatabaseOpenHelper.TABLE_EPISODES,
+				DBMediaOpenHelper.TABLE_EPISODES,
 				allColumns,
-				DatabaseOpenHelper.COL_KEY +" = "+ episodeKey,
+				DBMediaOpenHelper.COL_KEY +" = "+ episodeKey,
 				null, null, null, null);
 		Episode episode = cursorToEpisode(cursor);
 		
@@ -141,9 +141,9 @@ public class EpisodeDataSource {
 		
 		//TODO start a db transaction here to ensure only one Episode/row is updated
 		int rowsAffected = db.update(
-				DatabaseOpenHelper.TABLE_EPISODES,
+				DBMediaOpenHelper.TABLE_EPISODES,
 				values,
-				DatabaseOpenHelper.COL_KEY +" = "+ episode.getKey(),
+				DBMediaOpenHelper.COL_KEY +" = "+ episode.getKey(),
 				null);
 		if (rowsAffected == 1)
 		{
@@ -172,8 +172,8 @@ public class EpisodeDataSource {
 	{
 		//TODO start a db transaction here to ensure no more than one row is deleted
 		int rowsAffected = db.delete(
-				DatabaseOpenHelper.TABLE_EPISODES, 
-				DatabaseOpenHelper.COL_KEY +" = "+ episodeKey,
+				DBMediaOpenHelper.TABLE_EPISODES, 
+				DBMediaOpenHelper.COL_KEY +" = "+ episodeKey,
 				null);
 		if (rowsAffected == 1)
 		{
@@ -220,10 +220,10 @@ public class EpisodeDataSource {
 	private static ContentValues getValuesFromEpisode(Episode episode)
 	{
 		ContentValues values = new ContentValues();
-		values.put(DatabaseOpenHelper.COL_SHOW_FK, episode.getParentKey());
-		values.put(DatabaseOpenHelper.COL_NUM_SEASON, episode.getSeasonNum());
-		values.put(DatabaseOpenHelper.COL_NUM_EPISODE, episode.getEpisodeNum());
-		values.put(DatabaseOpenHelper.COL_TITLE, episode.getTitle());
+		values.put(DBMediaOpenHelper.COL_SHOW_FK, episode.getParentKey());
+		values.put(DBMediaOpenHelper.COL_NUM_SEASON, episode.getSeasonNum());
+		values.put(DBMediaOpenHelper.COL_NUM_EPISODE, episode.getEpisodeNum());
+		values.put(DBMediaOpenHelper.COL_TITLE, episode.getTitle());
 		return values;
 	}
 	
