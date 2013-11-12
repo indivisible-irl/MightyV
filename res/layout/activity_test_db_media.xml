@@ -4,6 +4,6 @@
     android:layout_height="match_parent"
     android:orientation="vertical" >
     
-    <!--  Next part to do. Adding this file to test GitHub IRC hook -->
+    <!--  Next part to do. Adding this file to test GitHub IRC hook. Test -->
 
 </LinearLayout>
