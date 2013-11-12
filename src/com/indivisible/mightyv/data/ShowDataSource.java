@@ -1,5 +1,8 @@
 package com.indivisible.mightyv.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.indivisible.mightyv.util.MyLog;
 
 import android.content.ContentValues;
@@ -146,6 +149,31 @@ public class ShowDataSource {
 		
 		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using RageID: " +foundShow.toString());
 		return foundShow;
+	}
+	
+	/**
+	 * Method to return every show saved in the database
+	 * @return List containing all Shows
+	 */
+	public List<Show> getAllShows()
+	{
+		List<Show> shows = new ArrayList<Show>();
+		
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_SHOWS,
+				allColumns,
+				null, null, null, null, null);		// null 'selection' param retrieves all rows in table
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieving all Shows. Found: " +cursor.getCount());
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			shows.add(cursorToShow(cursor));
+			cursor.moveToNext();
+		}
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Parsed and returned shows: " +shows.size());
+		return shows;
 	}
 	
 	/**
