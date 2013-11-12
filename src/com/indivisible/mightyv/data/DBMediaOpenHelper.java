@@ -6,8 +6,6 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-//TODO Make more specific - will have multiple db files so generic names won't work
-
 /**
  * Class to take care of database creation, upgrade and naming for the "Media" database
  * @author indivisible
