@@ -1,5 +1,8 @@
 package com.indivisible.mightyv.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.indivisible.mightyv.util.MyLog;
 
 import android.content.ContentValues;
@@ -81,6 +84,8 @@ public class EpisodeDataSource {
 	//		CRUD
 	//=================================================//
 	
+	//==== Create ====//
+	
 	/**
 	 * Create a new Episode object and store it in the database.
 	 * Returned Episode has its Primary Key within.
@@ -106,6 +111,8 @@ public class EpisodeDataSource {
 		return newEpisode;
 	}
 	
+	//==== Read ====//
+	
 	/**
 	 * Retrieve a stored Episode from its database identified by its Primary Key (long)
 	 * @param episodeKey  Episode's Primary Key
@@ -124,11 +131,57 @@ public class EpisodeDataSource {
 		return episode;
 	}
 	
-	//TODO future methods
+	/**
+	 * Retrieve all stored Episodes in the database.
+	 * Will return every Episode saved and as such should not be used unless explicitly needed.
+	 * @return List of all Episodes
+	 */
+	public List<Episode> getAllEpisodes()
+	{		
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_EPISODES,
+				allColumns,
+				null, null, null, null, null);		// null 'selection' param returns all rows in table
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieving ALL Episodes. Found: " +cursor.getCount());
+		List<Episode> episodes = getEpisodesFromCursor(cursor);
+		if (MyLog.verbose) MyLog.v(TAG, "Episodes parsed and returned: " +episodes.size());
+		
+		return episodes;
+	}
+	
+	/**
+	 * Retrieve all Episodes for one Show. Sorts by season and episode numbers.
+	 * @param showId The Foreign Key identifying the Episode parent to filter by
+	 * @return Collection of Episodes
+	 */
+	public List<Episode> getAllEpisodesForShow(long showId)
+	{
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_EPISODES,
+				allColumns,
+				DBMediaOpenHelper.COL_SHOW_FK +" = "+ showId,
+				null, null, null,
+				DBMediaOpenHelper.COL_NUM_SEASON +"ASC, "+ DBMediaOpenHelper.COL_NUM_EPISODE +"ASC");
+		if (MyLog.verbose)
+		{
+			MyLog.v(TAG, "Retrieving Show Episodes for showId: " +showId);
+			MyLog.v(TAG, "Found: " +cursor.getCount());
+		}
+		
+		List<Episode> episodes = getEpisodesFromCursor(cursor);
+		if (MyLog.verbose) MyLog.v(TAG, "Episodes parsed and returned: " +episodes.size());
+		return episodes;
+	}
+	
+	//TODO future Read methods
+	public List<Episode> _getAllEpisodesForSeason(long showId, int seasonNum) {return null;}
 	public Episode _getLatestEpisode() {return null;}
 	public Episode _getNextUnreleasedEpisode() {return null;}
 	public Episode _getLastWatchedEpisode() {return null;}
 	public Episode _getNextUnwatchedEpisode() {return null;}
+	
+	//==== Update ====//
 	
 	/**
 	 * Update an Episode's entry in the database
@@ -163,6 +216,8 @@ public class EpisodeDataSource {
 		}
 	}
 	
+	//==== Delete ====//
+	
 	/**
 	 * Delete an Episode's database entry identified by its Primary Key (long)
 	 * @param episodeKey The Episode to be deleted's Primary Key
@@ -171,6 +226,7 @@ public class EpisodeDataSource {
 	public boolean deleteEpisode(long episodeKey)
 	{
 		//TODO start a db transaction here to ensure no more than one row is deleted
+		//ASK or do it when calling delete (between open and close of db handle)
 		int rowsAffected = db.delete(
 				DBMediaOpenHelper.TABLE_EPISODES, 
 				DBMediaOpenHelper.COL_KEY +" = "+ episodeKey,
@@ -225,6 +281,26 @@ public class EpisodeDataSource {
 		values.put(DBMediaOpenHelper.COL_NUM_EPISODE, episode.getEpisodeNum());
 		values.put(DBMediaOpenHelper.COL_TITLE, episode.getTitle());
 		return values;
+	}
+	
+	/**
+	 * Private method to iterate through a Cursor's result rows and create a List of Episode objects
+	 * @param cursor Query result cursor
+	 * @return Collection of Episodes
+	 */
+	private static List<Episode> getEpisodesFromCursor(Cursor cursor)
+	{
+		List<Episode> episodes = new ArrayList<Episode>();
+		
+		cursor.moveToFirst();
+		Episode ep;
+		while (!cursor.isAfterLast())
+		{
+			ep = cursorToEpisode(cursor);
+			episodes.add(ep);
+			cursor.moveToNext();
+		}
+		return episodes;
 	}
 	
 }

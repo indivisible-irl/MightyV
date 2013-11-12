@@ -87,6 +87,8 @@ public class ShowDataSource {
 	//		CRUD
 	//=================================================//
 	
+	//==== Create ====//
+	
 	/**
 	 * Create a new Show object and store it in the database
 	 * @param rageID   TVRage.com's id for the Show
@@ -108,6 +110,8 @@ public class ShowDataSource {
 		if (MyLog.info) MyLog.i(TAG, "Created new Show: " +newShow.toString());
 		return newShow;
 	}
+	
+	//==== Read ====//
 	
 	/**
 	 * Retrieve an existing Show from the database using the Primary Key (long)
@@ -176,6 +180,8 @@ public class ShowDataSource {
 		return shows;
 	}
 	
+	//==== Update ====//
+	
 	/**
 	 * Update a Show's database entry
 	 * @param show Show to update database entry and state to use
@@ -207,6 +213,8 @@ public class ShowDataSource {
 			return false;
 		}
 	}
+	
+	//==== Delete ====//
 	
 	/**
 	 * Delete a Show's entry. Leaves it's episodes untouched (for now)
