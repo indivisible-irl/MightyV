@@ -22,6 +22,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name="com.indivisible.mightyv.activities.testing.TestMenu"
+            android:label="@string/title_activity_test_menu" >
+        </activity>
+        <activity
+            android:name="com.indivisible.mightyv.activities.testing.TestShows"
+            android:label="@string/title_activity_test_shows" >
+        </activity>
     </application>
 
 </manifest>
