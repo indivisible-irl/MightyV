@@ -1,5 +1,8 @@
 package com.indivisible.mightyv.data;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.indivisible.mightyv.util.MyLog;
 
 import android.content.ContentValues;
@@ -84,6 +87,8 @@ public class ShowDataSource {
 	//		CRUD
 	//=================================================//
 	
+	//==== Create ====//
+	
 	/**
 	 * Create a new Show object and store it in the database
 	 * @param rageID   TVRage.com's id for the Show
@@ -105,6 +110,8 @@ public class ShowDataSource {
 		if (MyLog.info) MyLog.i(TAG, "Created new Show: " +newShow.toString());
 		return newShow;
 	}
+	
+	//==== Read ====//
 	
 	/**
 	 * Retrieve an existing Show from the database using the Primary Key (long)
@@ -149,6 +156,33 @@ public class ShowDataSource {
 	}
 	
 	/**
+	 * Method to return every show saved in the database
+	 * @return List containing all Shows
+	 */
+	public List<Show> getAllShows()
+	{
+		List<Show> shows = new ArrayList<Show>();
+		
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_SHOWS,
+				allColumns,
+				null, null, null, null, null);		// null 'selection' param retrieves all rows in table
+		if (MyLog.verbose) MyLog.v(TAG, "Retrieving all Shows. Found: " +cursor.getCount());
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			shows.add(cursorToShow(cursor));
+			cursor.moveToNext();
+		}
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Parsed and returned shows: " +shows.size());
+		return shows;
+	}
+	
+	//==== Update ====//
+	
+	/**
 	 * Update a Show's database entry
 	 * @param show Show to update database entry and state to use
 	 * @return boolean indicating successful update
@@ -179,6 +213,8 @@ public class ShowDataSource {
 			return false;
 		}
 	}
+	
+	//==== Delete ====//
 	
 	/**
 	 * Delete a Show's entry. Leaves it's episodes untouched (for now)

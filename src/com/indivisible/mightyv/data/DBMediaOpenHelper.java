@@ -82,8 +82,10 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 	@Override
 	public void onCreate(SQLiteDatabase db)
 	{
+		if (MyLog.info) MyLog.i(TAG, "Creating Media database...");
 		db.execSQL(CREATE_TABLE_SHOWS);
 		db.execSQL(CREATE_TABLE_EPISODES);
+		if (MyLog.info) MyLog.i(TAG, "Media database created.");
 	}
 	
 	//=================================================//
