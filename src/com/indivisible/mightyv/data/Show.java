@@ -152,5 +152,18 @@ public class Show {
 		return sb.toString();
 	}
 	
+	/**
+	 * Get a two line String that contains the Show's details.
+	 * Used to display in the basic testing ListView
+	 * @return String with Show's info
+	 */
+	public String info()
+	{
+		StringBuilder sb = new StringBuilder();
+		sb.append(showKey).append(" : ").append(title).append("\n");
+		sb.append(rageID).append(", ").append(status);
+		return sb.toString();
+	}
+	
 	//=================================================//
 }
