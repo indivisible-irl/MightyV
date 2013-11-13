@@ -32,8 +32,8 @@ public class TestMenu extends ListActivity
 	 * Include path from src/com/indivisible/mightyv/ and above 
 	 */
 	String[] testActivities = new String[] {
-			"testing.TestShows",
-			"testing.TestEpisodes"
+			"activities.testing.TestShows",
+			"acyivities.testing.TestEpisodes"
 		};
 	
 	
@@ -67,12 +67,14 @@ public class TestMenu extends ListActivity
 	protected void onListItemClick(ListView lv, View v, int position, long id)
 	{
 		super.onListItemClick(lv, v, position, id);
-
+		
+		String activityPath = "<NULL>";
 		Class<?> newActivity = null;
 		try
 		{
 			String activityStr = testActivities[position];
-			newActivity = Class.forName("com.indivisible.mightyv." + activityStr);  // manually create the class path
+			activityPath = "com.indivisible.mightyv." + activityStr;
+			newActivity = Class.forName(activityPath);  // manually create the class path
 			if (MyLog.debug) MyLog.d(TAG, "Activity class path: " +newActivity);
 			Intent ourIntent = new Intent(TestMenu.this, newActivity);
 			startActivity(ourIntent);
@@ -80,6 +82,7 @@ public class TestMenu extends ListActivity
 		catch (ClassNotFoundException e)	//if the chosen item cannot be formed into a valid class path
 		{
 			// inform the user that the selected item is not formed correctly and cannot be started as an Activity
+			MyLog.e(TAG, "Class failed: " +activityPath);
 			Toast toast = Toast.makeText(TestMenu.this, "Class not found:\n" +newActivity, Toast.LENGTH_SHORT);
 			toast.show();
 		}
