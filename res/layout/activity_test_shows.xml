@@ -1,4 +1,4 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -6,11 +6,83 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:orientation="vertical"
     tools:context=".TestShows" >
 
-    <TextView
-        android:layout_width="wrap_content"
+    <!--  Section for EditTexts to add a new show  -->
+    <EditText
+        android:id="@+id/test_show_addTitle" 
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/hello_world" />
+        android:text=""
+        android:hint="Show Title"
+        />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+    	>
+    	<EditText
+    	    android:id="@+id/test_show_addStatus"
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:text=""
+    	    android:hint="Status"
+    	    />
+    	<EditText
+    	    android:id="@+id/test_show_addRageID"
+    	    android:layout_width="0dp"
+    	    android:layout_height="wrap_content"
+    	    android:layout_weight="1"
+    	    android:text=""
+    	    android:hint="Rage ID"
+    	    />
+    </LinearLayout>
+    
+    <!--  Buttons to commit add and delete all Shows  -->
+    <LinearLayout 
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        >
+        <Button 
+            android:id="@+id/test_show_buttonDeleteAll"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="Del All"
+            />
+        <Button
+            android:id="@+id/test_show_buttonDelOne"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="Del One"
+            />
+        <Button
+            android:id="@+id/test_show_buttonSave"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:gravity="center"
+            style="?android:attr/buttonBarButtonStyle"
+            android:text="Save"
+            />
+        
+    </LinearLayout>
+    
+    <ListView
+        android:id="@+id/test_show_listview"
+        android:layout_width="match_parent"
+        android:layout_height="fill_parent"
+        
+        />
+    
+    	
 
-</RelativeLayout>
+</LinearLayout>
