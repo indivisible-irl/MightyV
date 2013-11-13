@@ -21,7 +21,7 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 	
 	// database details	
 	private static final String DATABASE_NAME    = "mightyv_shows.db";
-	private static final int    DATABASE_VERSION = 1;
+	private static final int    DATABASE_VERSION = 3;
 	
 	// table - common
 	public static final String COL_KEY    = "_id";
@@ -47,7 +47,8 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 			+TABLE_SHOWS+ "(" 
 			+COL_KEY+     " integer primary key autoincrement, "
 			+COL_RAGEID+  " integer not null, "
-			+COL_STATUS+  " text "
+			+COL_STATUS+  " text, "
+			+COL_TITLE+   " text not null "
 			+");";
 	private static final String CREATE_TABLE_EPISODES = "create table "
 			+TABLE_EPISODES+  "(" 
@@ -102,8 +103,9 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 		// for now (development) let's just delete and recreate the whole database
 		//   will eventually have methods to gracefully update/migrate database contents when going live
 		//   may add some methods to populate the db with test data once I reach that point
-		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_SHOWS);
-		db.execSQL("DROP TABLE IF EXISTS " + CREATE_TABLE_EPISODES);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_SHOWS);
+		db.execSQL("DROP TABLE IF EXISTS " + TABLE_EPISODES);
+		onCreate(db);
 	}
 	
 	

@@ -156,6 +156,30 @@ public class ShowDataSource {
 	}
 	
 	/**
+	 * Gather the Primary Keys for all Shows saved in the database
+	 * @return List of Longs that are the Primary Keys
+	 */
+	public List<Long> getAllShowKeys()
+	{
+		List<Long> allShowKeys = new ArrayList<Long>();
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_SHOWS,
+				new String[] { DBMediaOpenHelper.COL_KEY },
+				null, null, null, null, null);
+		if (MyLog.verbose) MyLog.v(TAG, "Collecting all Show keys. Found: " +cursor.getCount());
+		
+		cursor.moveToFirst();
+		while (!cursor.isAfterLast())
+		{
+			allShowKeys.add(cursor.getLong(0));
+			cursor.moveToNext();
+		}
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Parsed keys: " +allShowKeys.size());
+		return allShowKeys;
+	}
+	
+	/**
 	 * Method to return every show saved in the database
 	 * @return List containing all Shows
 	 */
@@ -245,6 +269,28 @@ public class ShowDataSource {
 			//todo discard changes
 			return false;
 		}				
+	}
+	
+	/**
+	 * Delete all Shows from the database.
+	 * Currently does not delete associated Episodes too
+	 * @return List of Longs identifying any Shows that did not delete
+	 */
+	public List<Long> deleteAllShows()
+	{
+		List<Long> failedDeletes = new ArrayList<Long>();
+		List<Long> allShowKeys = getAllShowKeys();
+		
+		for (Long showKey : allShowKeys)
+		{
+			if (!deleteShow(showKey))
+			{
+				if (MyLog.error) MyLog.e(TAG, "Failed to delete Show with Key: " +showKey);
+				failedDeletes.add(showKey);
+			}
+		}
+		// pass back a list of any Shows that didn't delete
+		return failedDeletes;
 	}
 	
 	
