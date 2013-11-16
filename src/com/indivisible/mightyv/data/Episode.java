@@ -192,6 +192,19 @@ public class Episode {
 		return sb.toString();
 	}
 	
+	/**
+	 * Convenience method to display Episode info on two lines
+	 * @return String with Episode details
+	 */
+	public String info()
+	{
+		StringBuilder sb = new StringBuilder();
+		
+		sb.append(showKey).append(": ").append(episodeKey).append(" | ").append(seasonNum).append("/").append(episodeNum).append("\n");
+		sb.append(title);
+		
+		return sb.toString();
+	}
 	
 	//=================================================//
 }
