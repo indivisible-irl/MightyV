@@ -28,7 +28,8 @@ public class EpisodeDataSource {
 			DBMediaOpenHelper.COL_KEY,
 			DBMediaOpenHelper.COL_SHOW_FK,
 			DBMediaOpenHelper.COL_NUM_EPISODE,
-			DBMediaOpenHelper.COL_NUM_SEASON
+			DBMediaOpenHelper.COL_NUM_SEASON,
+			DBMediaOpenHelper.COL_TITLE
 		};
 
 	
@@ -99,11 +100,13 @@ public class EpisodeDataSource {
 	{
 		// insert and get show's key id
 		ContentValues values = new ContentValues();
-		values.put(DBMediaOpenHelper.COL_SHOW_FK, 	    showKey);
+		values.put(DBMediaOpenHelper.COL_SHOW_FK, 	   showKey);
 		values.put(DBMediaOpenHelper.COL_NUM_SEASON,   seasonNum);
 		values.put(DBMediaOpenHelper.COL_NUM_EPISODE,  episodeNum);
 		values.put(DBMediaOpenHelper.COL_TITLE,        title);
 		long episodeKey = db.insert(DBMediaOpenHelper.TABLE_EPISODES, null, values);
+		
+		if (MyLog.debug) MyLog.d(TAG, "Saved Episode. Key: " +episodeKey);
 		
 		// retrieve saved show and return
 		Episode newEpisode =  getEpisodeByKey(episodeKey);
@@ -116,7 +119,7 @@ public class EpisodeDataSource {
 	/**
 	 * Retrieve a stored Episode from its database identified by its Primary Key (long)
 	 * @param episodeKey  Episode's Primary Key
-	 * @return Episode
+	 * @return Episode matching Key
 	 */
 	public Episode getEpisodeByKey(long episodeKey)
 	{
@@ -125,10 +128,45 @@ public class EpisodeDataSource {
 				allColumns,
 				DBMediaOpenHelper.COL_KEY +" = "+ episodeKey,
 				null, null, null, null);
-		Episode episode = cursorToEpisode(cursor);
+		if (MyLog.debug) MyLog.d(TAG, "Retrieve Episode. Results: " +cursor.getCount());
+		
+		Episode episode = null;
+		cursor.moveToFirst();
+		if (!cursor.isAfterLast()) {
+			episode = cursorToEpisode(cursor);
+		}
+		else
+		{
+			if (MyLog.error) MyLog.e(TAG, "No results in cursor");
+		}
 		
 		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Episode from db: " +episode.toString());
 		return episode;
+	}
+	
+	/**
+	 * Retrieve a List of all Episode Primary Keys
+	 * @return List of Longs of keys
+	 */
+	public List<Long> getAllEpisodeKeys()
+	{
+		List<Long> keys = new ArrayList<Long>();
+		
+		Cursor cursor = db.query(
+				DBMediaOpenHelper.TABLE_EPISODES,
+				new String[] { DBMediaOpenHelper.COL_KEY },
+				null, null, null, null, null);
+		if (MyLog.verbose) MyLog.v(TAG, "Gathering all Episode keys. Found: " +cursor.getCount());
+		
+		cursor.moveToFirst();
+		while(!cursor.isAfterLast())
+		{
+			keys.add(cursor.getLong(0));
+			cursor.moveToNext();
+		}
+		
+		if (MyLog.verbose) MyLog.v(TAG, "Processed keys: " +keys.size());
+		return keys;
 	}
 	
 	/**
@@ -137,13 +175,11 @@ public class EpisodeDataSource {
 	 * @return List of all Episodes
 	 */
 	public List<Episode> getAllEpisodes()
-	{		
+	{
 		Cursor cursor = db.query(
 				DBMediaOpenHelper.TABLE_EPISODES,
 				allColumns,
 				null, null, null, null, null);		// null 'selection' param returns all rows in table
-		
-		if (MyLog.verbose) MyLog.v(TAG, "Retrieving ALL Episodes. Found: " +cursor.getCount());
 		List<Episode> episodes = getEpisodesFromCursor(cursor);
 		if (MyLog.verbose) MyLog.v(TAG, "Episodes parsed and returned: " +episodes.size());
 		
@@ -249,6 +285,44 @@ public class EpisodeDataSource {
 		}
 	}
 	
+	/**
+	 * Delete a number of Episodes at once
+	 * @param episodeKeys List of Logs of Episode Primary Keys
+	 * @return List of Longs of any failed deletes
+	 */
+	public List<Long> deleteMultipleEpisodes(List<Long> episodeKeys)
+	{
+		if (MyLog.debug) MyLog.d(TAG, "Delete multiple Episodes. Recieved Keys: " +episodeKeys);
+		List<Long> failedDeletes = new ArrayList<Long>();
+		
+		for (Long key : episodeKeys)
+		{
+			if (!deleteEpisode(key))
+			{
+				if (MyLog.error) MyLog.e(TAG, "Couldn't delete Episode: " +key);
+				failedDeletes.add(key);
+			}
+		}
+		return failedDeletes;
+	}
+	
+	/**
+	 * Delete all Episodes in the database
+	 * @return List of Episode keys that didn't delete
+	 */
+	public List<Long> deleteAllEpisodes()
+	{
+		List<Long> allEpisodeKeys = getAllEpisodeKeys();
+		if (MyLog.debug) MyLog.d(TAG, "All Episodes. Found: " +allEpisodeKeys.size());
+		
+		List<Long> failedDeletes = deleteMultipleEpisodes(allEpisodeKeys);
+		if (MyLog.warn && failedDeletes.size() > 0)
+		{
+			MyLog.w(TAG, "Couldn't delete some Episodes. Total: " +failedDeletes.size());
+		}
+		return failedDeletes;
+	}
+	
 	//=================================================//
 	//		private methods
 	//=================================================//
@@ -262,9 +336,10 @@ public class EpisodeDataSource {
 	{
 		Episode ep = new Episode();
 		ep.setKey(cursor.getLong(0));
-		ep.setParentKey((cursor.getInt(1)));
-		ep.setEpisodeNum(cursor.getInt(2));
-		ep.setTitle(cursor.getString(3));
+		ep.setParentKey(cursor.getLong(1));
+		ep.setSeasonNum(cursor.getInt(2));
+		ep.setEpisodeNum(cursor.getInt(3));
+		ep.setTitle(cursor.getString(4));
 		return ep;
 	}
 	
