@@ -33,7 +33,7 @@ public class TestMenu extends ListActivity
 	 */
 	String[] testActivities = new String[] {
 			"activities.testing.TestShows",
-			"acyivities.testing.TestEpisodes"
+			"activities.testing.TestEpisodes"
 		};
 	
 	

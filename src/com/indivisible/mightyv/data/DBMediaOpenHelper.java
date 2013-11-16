@@ -21,7 +21,7 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 	
 	// database details	
 	private static final String DATABASE_NAME    = "mightyv_shows.db";
-	private static final int    DATABASE_VERSION = 3;
+	private static final int    DATABASE_VERSION = 5;
 	
 	// table - common
 	public static final String COL_KEY    = "_id";
@@ -53,9 +53,10 @@ public class DBMediaOpenHelper extends SQLiteOpenHelper
 	private static final String CREATE_TABLE_EPISODES = "create table "
 			+TABLE_EPISODES+  "(" 
 			+COL_KEY +        " integer primary key autoincrement, "
-			+COL_SHOW_FK+     "integer not null, "
+			+COL_SHOW_FK+     " integer not null, "
 			+COL_NUM_SEASON+  " integer not null, "
-			+COL_NUM_EPISODE+ " integer not null "
+			+COL_NUM_EPISODE+ " integer not null, "
+			+COL_TITLE+ " text "
 			+");";
 	
 	//=================================================//
