@@ -6,7 +6,7 @@
 
     <uses-sdk
         android:minSdkVersion="13"
-        android:targetSdkVersion="18" />
+        android:targetSdkVersion="19" />
 
     <application
         android:allowBackup="true"
@@ -25,8 +25,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        
+        <!--  Testing Activities  -->
         <activity
             android:name="com.indivisible.mightyv.activities.testing.TestShows"
+            android:label="@string/title_activity_test_shows" >
+        </activity>
+        <activity
+            android:name="com.indivisible.mightyv.activities.testing.TestEpisodes"
             android:label="@string/title_activity_test_shows" >
         </activity>
     </application>
