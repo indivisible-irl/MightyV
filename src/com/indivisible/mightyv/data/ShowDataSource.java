@@ -15,8 +15,12 @@ import android.database.sqlite.SQLiteDatabase;
  * Class to handle the interactions between Show objects and their database
  * @author indivisible
  */
-public class ShowDataSource {
+public class ShowDataSource
+{
 
+	//ASK refactor/consolidate queries. All return List<?> and take proper query 'selection' term
+	//ASK catch SQLExceptions when performing queries?
+	
 	//=================================================//
 	//		data
 	//=================================================//
@@ -98,14 +102,17 @@ public class ShowDataSource {
 	 */
 	public Show createShow(int rageID, String status, String title)
 	{
-		// insert and get show's key id
+		// format Show's values for insertion
 		ContentValues values = new ContentValues();
 		values.put(DBMediaOpenHelper.COL_RAGEID, rageID);
 		values.put(DBMediaOpenHelper.COL_STATUS, status);
 		values.put(DBMediaOpenHelper.COL_TITLE, title);
-		long showKey = db.insert(DBMediaOpenHelper.TABLE_SHOWS, null, values);
 		
-		// retrieve saved show and return
+		// insert values and get new Show's Primary Key
+		long showKey = db.insert(DBMediaOpenHelper.TABLE_SHOWS, null, values);
+		if (MyLog.debug) MyLog.d(TAG, "Created new Show with key: " +showKey);
+		
+		// retrieve saved show and return as a Show object
 		Show newShow = getShowByKey(showKey);
 		if (MyLog.info) MyLog.i(TAG, "Created new Show: " +newShow.toString());
 		return newShow;
@@ -116,67 +123,113 @@ public class ShowDataSource {
 	/**
 	 * Retrieve an existing Show from the database using the Primary Key (long)
 	 * @param showKey Show's Primary Key
-	 * @return Retrieved Show
+	 * @return Retrieved Show or NULL on fail
 	 */
 	public Show getShowByKey(long showKey)
 	{
-		Cursor cursor = db.query(
-				DBMediaOpenHelper.TABLE_SHOWS,
-		        allColumns,
-		        DBMediaOpenHelper.COL_KEY +" = "+ showKey,
-		        null, null, null, null);
-		cursor.moveToFirst();
-		//TODO test results of failed retrievals
-		Show foundShow = cursorToShow(cursor);
-		cursor.close();
+		Cursor cursor = null;
+		try
+		{
+			// form and perform database query
+			cursor = db.query(
+					DBMediaOpenHelper.TABLE_SHOWS,
+			        allColumns,
+			        DBMediaOpenHelper.COL_KEY +" = "+ showKey,
+			        null, null, null, null);
+			// ensure we only have one result
+			if (cursor.moveToFirst() && cursor.getCount() == 1)
+			{
+				// convert result to Show and return
+				Show foundShow = cursorToShow(cursor);
+				if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using showKey: " +foundShow.toString());
+				return foundShow;
+			}
+			else
+			{
+				if (MyLog.error) MyLog.e(TAG, "Failed to retrieve Show (" +showKey+ "). Num results: " +cursor.getCount());
+				return null;
+			}
+		}
+		finally
+		{
+			if (cursor != null)
+				cursor.close();
+		}
 		
-		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using showKey: " +foundShow.toString());
-		return foundShow;
+		
 	}
 	
 	/**
 	 * Retrieve an existing Show from the database using the TVRage Id
 	 * @param rageID  TVRage.com's id for the Show
-	 * @return Retrieved show
+	 * @return Retrieved show or NULL on fail
 	 */
 	public Show getShowByRageID(int rageID)
 	{
-		Cursor cursor = db.query(
-				DBMediaOpenHelper.TABLE_SHOWS,
-				allColumns,
-				DBMediaOpenHelper.COL_RAGEID +" = "+ rageID,
-				null, null, null, null);
-		cursor.moveToFirst();
-		//todo test results of failed retrievals
-		Show foundShow = cursorToShow(cursor);
-		cursor.close();
-		
-		if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using RageID: " +foundShow.toString());
-		return foundShow;
+		Cursor cursor = null;
+		try
+		{
+			// form and perform a database query
+			cursor = db.query(
+					DBMediaOpenHelper.TABLE_SHOWS,
+					allColumns,
+					DBMediaOpenHelper.COL_RAGEID +" = "+ rageID,
+					null, null, null, null);
+			// get Show from cursor
+			if (cursor.moveToFirst() && cursor.getCount() == 1)
+			{
+				Show foundShow = cursorToShow(cursor);
+				if (MyLog.verbose) MyLog.v(TAG, "Retrieved Show from db using RageID: " +foundShow.toString());
+				return foundShow;
+			}
+			else // incorrect number of results
+			{
+				if (MyLog.error) MyLog.e(TAG, "Get Show by rageID - Incorrect num results: " +cursor.getCount());
+				return null;
+			}
+		}
+		finally
+		{
+			if (cursor != null)
+				cursor.close();
+		}
 	}
 	
 	/**
 	 * Gather the Primary Keys for all Shows saved in the database
 	 * @return List of Longs that are the Primary Keys
 	 */
-	public List<Long> getAllShowKeys()
+	private List<Long> getAllShowKeys()
 	{
-		List<Long> allShowKeys = new ArrayList<Long>();
-		Cursor cursor = db.query(
-				DBMediaOpenHelper.TABLE_SHOWS,
-				new String[] { DBMediaOpenHelper.COL_KEY },
-				null, null, null, null, null);
-		if (MyLog.verbose) MyLog.v(TAG, "Collecting all Show keys. Found: " +cursor.getCount());
-		
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast())
+		Cursor cursor = null;
+		try
 		{
-			allShowKeys.add(cursor.getLong(0));
-			cursor.moveToNext();
+			// form and perform a database query
+			cursor = db.query(
+					DBMediaOpenHelper.TABLE_SHOWS,
+					new String[] { DBMediaOpenHelper.COL_KEY },
+					null, null, null, null, null);
+			if (MyLog.verbose) MyLog.v(TAG, "Collecting all Show keys. Found: " +cursor.getCount());
+			
+			// iterate through the results and add to list
+			List<Long> allShowKeys = new ArrayList<Long>();
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				allShowKeys.add(cursor.getLong(0));
+				cursor.moveToNext();
+			}
+			
+			// return List of Show keys
+			if (MyLog.verbose) MyLog.v(TAG, "Parsed keys: " +allShowKeys.size());
+			return allShowKeys;
+			
 		}
-		
-		if (MyLog.verbose) MyLog.v(TAG, "Parsed keys: " +allShowKeys.size());
-		return allShowKeys;
+		finally
+		{
+			if (cursor != null)
+				cursor.close();
+		}
 	}
 	
 	/**
@@ -185,23 +238,34 @@ public class ShowDataSource {
 	 */
 	public List<Show> getAllShows()
 	{
-		List<Show> shows = new ArrayList<Show>();
-		
-		Cursor cursor = db.query(
-				DBMediaOpenHelper.TABLE_SHOWS,
-				allColumns,
-				null, null, null, null, null);		// null 'selection' param retrieves all rows in table
-		if (MyLog.verbose) MyLog.v(TAG, "Retrieving all Shows. Found: " +cursor.getCount());
-		
-		cursor.moveToFirst();
-		while (!cursor.isAfterLast())
+		Cursor cursor = null;
+		try
 		{
-			shows.add(cursorToShow(cursor));
-			cursor.moveToNext();
+			// form and perform a db query
+			cursor = db.query(
+					DBMediaOpenHelper.TABLE_SHOWS,
+					allColumns,
+					null, null, null, null, null);		// null 'selection' param retrieves all rows in table
+			if (MyLog.verbose) MyLog.v(TAG, "Retrieving all Shows. Found: " +cursor.getCount());
+	
+			// iterate through the query results and add to list
+			List<Show> shows = new ArrayList<Show>();
+			cursor.moveToFirst();
+			while (!cursor.isAfterLast())
+			{
+				shows.add(cursorToShow(cursor));
+				cursor.moveToNext();
+			}
+			
+			// return List of Show objects
+			if (MyLog.debug) MyLog.d(TAG, "Parsed and returned shows: " +shows.size());
+			return shows;
 		}
-		
-		if (MyLog.verbose) MyLog.v(TAG, "Parsed and returned shows: " +shows.size());
-		return shows;
+		finally
+		{
+			if (cursor != null)
+				cursor.close();
+		}
 	}
 	
 	//==== Update ====//
@@ -213,28 +277,37 @@ public class ShowDataSource {
 	 */
 	public boolean updateShow(Show show)
 	{
+		// get Show's info in a usable format for database entry
 		ContentValues values = getValuesFromShow(show);
-		//TODO start a db transaction here to ensure no more than one row is changed
-		int rowsAffected = db.update(
-				DBMediaOpenHelper.TABLE_SHOWS,
-				values,
-				DBMediaOpenHelper.COL_KEY +" = "+ show.getKey(),
-				null);
-		if (rowsAffected == 1)
+		// start a transaction so we can revert changes if necessary
+		db.beginTransaction();
+		try
 		{
-			if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +show.toString());
-			//todo commit changes
-			return true;
-		}
-		else
-		{
-			if (MyLog.error)
+			// perform update. returns number of rows that were changed
+			int rowsAffected = db.update(
+					DBMediaOpenHelper.TABLE_SHOWS,
+					values,
+					DBMediaOpenHelper.COL_KEY +" = "+ show.getKey(),
+					null);
+			// one row changed is what we wanted
+			if (rowsAffected == 1)
 			{
-				MyLog.e(TAG, "Attempted but failed to update Show: " +show.toString());
-				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+				if (MyLog.verbose) MyLog.v(TAG, "Updated episode: " +show.toString());
+				db.setTransactionSuccessful();
+				return true;
 			}
-			//todo discard changes
-			return false;
+			// more or fewer rows changed means failed update
+			else
+			{
+				if (MyLog.error) MyLog.e(TAG, "Failed to update Show: " +show.toString()+ ". rowsAffected: " +rowsAffected);
+				// do not commit changes
+				return false;
+			}
+		}
+		// 'finally' block gets executed even after a return
+		finally
+		{
+			db.endTransaction();
 		}
 	}
 	
@@ -248,27 +321,49 @@ public class ShowDataSource {
 	public boolean deleteShow(long showKey)
 	{
 		//FIXME deleting a show should remove all its episodes too
-		//TODO start a db transaction here to ensure no more than one row is deleted
-		int rowsAffected = db.delete(
-				DBMediaOpenHelper.TABLE_SHOWS, 
-				DBMediaOpenHelper.COL_KEY +" = "+ showKey,
-				null);
-		if (rowsAffected == 1)
+		
+		// start a transaction so we can revert changes if other than one row is affected
+		db.beginTransaction();
+		try
 		{
-			if (MyLog.info) MyLog.i(TAG, "Deleted Show with Key: " +showKey);
-			//todo commit changes
-			return true;
-		}
-		else
-		{
-			if (MyLog.error)
+			// perform delete. returns number of deleted (changed) rows
+			int rowsAffected = db.delete(
+					DBMediaOpenHelper.TABLE_SHOWS, 
+					DBMediaOpenHelper.COL_KEY +" = "+ showKey,
+					null);
+			// only exactly one row/Show deleted
+			if (rowsAffected == 1)
 			{
-				MyLog.e(TAG, "Tried to delete Show. Couldn't do it. ShowKey: " +showKey);
-				MyLog.e(TAG, "Rows affected: " +rowsAffected);
+				if (MyLog.verbose) MyLog.v(TAG, "Deleted Show with Key: " +showKey);
+				db.setTransactionSuccessful();
+				return true;
 			}
-			//todo discard changes
-			return false;
-		}				
+			// none or more than one row/Show affected
+			else
+			{
+				if (MyLog.error)
+				{
+					MyLog.e(TAG, "Tried to delete Show. Couldn't do it. ShowKey: " +showKey);
+					MyLog.e(TAG, "Rows affected: " +rowsAffected);
+				}
+				return false;
+			}
+		}
+		// 'finally' block executes even after a method's return statement
+		finally
+		{
+			db.endTransaction();
+		}
+	}
+	
+	/**
+	 * Delete a Show's entry. Leaves it's episodes untouched (for now)
+	 * @param show Show object containing its Primary Key
+	 * @return boolean indicating successful deletion
+	 */
+	public boolean deleteShow(Show show)
+	{
+		return deleteShow(show.getKey());
 	}
 	
 	/**
@@ -278,11 +373,14 @@ public class ShowDataSource {
 	 */
 	public List<Long> deleteAllShows()
 	{
+		// lists for saving any failed deletes and all Show's Primary Keys
 		List<Long> failedDeletes = new ArrayList<Long>();
 		List<Long> allShowKeys = getAllShowKeys();
 		
+		// loop Primary Keys and delete
 		for (Long showKey : allShowKeys)
 		{
+			// if Show didn't delete successfully then log it and add to failed list 
 			if (!deleteShow(showKey))
 			{
 				if (MyLog.error) MyLog.e(TAG, "Failed to delete Show with Key: " +showKey);
@@ -295,11 +393,12 @@ public class ShowDataSource {
 	
 	
 	//=================================================//
-	//		public methods
+	//		private methods
 	//=================================================//
 	
 	/**
-	 * Extract a Show object from a Cursor's current result
+	 * Extract a Show object from a Cursor's current result.
+	 * Cursor must contain allColumns and be in that correct order.
 	 * @param cursor Database query Cursor set to desired position
 	 * @return Show
 	 */
