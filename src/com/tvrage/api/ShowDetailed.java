@@ -19,12 +19,12 @@ public class ShowDetailed extends ShowSimple
 	// private String	classification;
 	// private String[] genres;
 	
-	private String startedLong;
-	private String endedLong;
-	private int runtime;
-	private String network;
-	private String airtime;
-	private String airday;
+	private String	startedLong;
+	private String	endedLong;
+	private int		runtime;
+	private String	network;
+	private String	airtime;
+	private String	airday;
 	private String[] akas;
 	
 	
@@ -40,7 +40,7 @@ public class ShowDetailed extends ShowSimple
 	
 	public ShowDetailed(String whatever)
 	{
-		
+		//TODO this whole class
 	}
 	
 	
