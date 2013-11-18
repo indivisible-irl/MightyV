@@ -29,7 +29,7 @@ public class Show {
 	 */
 	public Show()
 	{
-		// default
+		// default constructor
 	}
 	
 	/**
@@ -128,12 +128,16 @@ public class Show {
 	//   Will still be able to return something even if the Show has no info.
 	@Override
 	public String toString()
-	{
+	{ 
 		StringBuilder sb = new StringBuilder();
 		
 		if (this.showKey != -1)
 		{
 			sb.append(showKey).append(": ");
+		}
+		else if (this.rageID != -1)
+		{
+			sb.append("[").append(rageID).append("]: ");
 		}
 		else
 		{
