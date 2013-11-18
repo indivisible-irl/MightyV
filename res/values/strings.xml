@@ -4,8 +4,5 @@
     <string name="app_name">MightyV</string>
     <string name="action_settings">Settings</string>
     <string name="hello_world">Hello world!</string>
-    <string name="title_activity_test_menu">TestMenu</string>
-    <string name="title_activity_test_shows">TestShows</string>
-    <string name="title_activity_test_search">TestSearch</string>
 
 </resources>
