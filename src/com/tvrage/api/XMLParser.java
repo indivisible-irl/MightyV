@@ -19,33 +19,22 @@ public class XMLParser
 	//		data
 	//=================================================//
 	
-	private String TAG;
+	protected String TAG;
 	
-	private URL url;
-	private String rootElement;
+	protected URL url = null;
+	protected String rootElement = null;
 	
+	protected static String urlRoot = "http://services.tvrage.com/feeds/";
 	// save individual tags in child classes
-	
 	
 	
 	//=================================================//
 	//		constructor
 	//=================================================//
 	
-	public XMLParser(String urlStr, String root)
+	public XMLParser()
 	{
 		this.TAG = this.getClass().getSimpleName();
-		this.rootElement = root;
-		
-		try
-		{
-			this.url = new URL(urlStr);
-		}
-		catch (MalformedURLException e)
-		{
-			if (MyLog.error) MyLog.e(TAG, "Error forming URL: " +urlStr);
-		}
-
 	}
 	
 	
@@ -60,6 +49,17 @@ public class XMLParser
 	public void setURL(URL url)
 	{
 		this.url = url;
+	}
+	public void setURL(String urlStr)
+	{
+		try
+		{
+			this.url = new URL(urlStr);
+		}
+		catch (MalformedURLException e)
+		{
+			if (MyLog.error) MyLog.e(TAG, "Error forming URL: " +urlStr);
+		}
 	}
 	
 	public String getRootElement()
@@ -76,7 +76,7 @@ public class XMLParser
 	//		methods
 	//=================================================//
 	
-	private InputStream getXMLStream()
+	protected InputStream getXMLInputStream()
 	{
 		InputStream inputStream = null;
 		try
@@ -94,8 +94,8 @@ public class XMLParser
 		return inputStream;
 	}
 	
-	private void parseXML()
+	protected boolean parseXML(InputStream stream)
 	{
-		throw new UnsupportedOperationException();
+		throw new UnsupportedOperationException("Implement/Override in child class");
 	}
 }
