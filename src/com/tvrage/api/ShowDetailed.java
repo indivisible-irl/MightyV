@@ -8,22 +8,23 @@ public class ShowDetailed extends ShowSimple
 	//=================================================//
 	
 	//// inherited from ShowSimple:
-	// private int showid;
-	// private String link;
-	// private String country;
-	// private int started;
-	// private int ended;
-	// private int seasons;
-	// private String status;
-	// private String classification;
+	// private int		showid;
+	// private String	name;
+	// private String	link;
+	// private String	country;
+	// private int		started;
+	// private int		ended;
+	// private int		seasons;
+	// private String 	status;
+	// private String	classification;
 	// private String[] genres;
 	
-	private String startedLong;
-	private String endedLong;
-	private int runtime;
-	private String network;
-	private String airtime;
-	private String airday;
+	private String	startedLong;
+	private String	endedLong;
+	private int		runtime;
+	private String	network;
+	private String	airtime;
+	private String	airday;
 	private String[] akas;
 	
 	
@@ -31,7 +32,16 @@ public class ShowDetailed extends ShowSimple
 	//		constructor
 	//=================================================//
 	
+	public ShowDetailed()
+	{
+		// default constructor
+		super();
+	}
 	
+	public ShowDetailed(String whatever)
+	{
+		//TODO this whole class
+	}
 	
 	
 	//=================================================//
