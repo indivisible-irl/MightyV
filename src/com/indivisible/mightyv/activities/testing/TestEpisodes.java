@@ -204,12 +204,12 @@ public class TestEpisodes extends Activity implements OnClickListener
 	private void deleteAll()
 	{
 		episodeSource.openWritable();
-		List<Long> failedDeletes = episodeSource.deleteAllEpisodes();
+		boolean successfulDelete = episodeSource.deleteAllEpisodes();
 		episodeSource.close();
 		
-		if (failedDeletes.size() > 0)
+		if (!successfulDelete)
 		{
-			MyLog.e(TAG, "Failed to delete: " +failedDeletes.size());
+			MyLog.e(TAG, "Failed to delete some Shows");
 		}
 	}
 	
@@ -221,7 +221,7 @@ public class TestEpisodes extends Activity implements OnClickListener
 		if (savedEpisodes != null && savedEpisodes.size() > 0)
 		{
 			episodeSource.openWritable();
-			episodeSource.deleteEpisode(savedEpisodes.get(0));
+			episodeSource.deleteOneEpisode(savedEpisodes.get(0));
 			episodeSource.close();
 			
 			savedEpisodes.remove(0);
