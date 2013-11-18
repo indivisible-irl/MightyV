@@ -3,6 +3,8 @@ package com.tvrage.api;
 public class ShowDetailed extends ShowSimple
 {
 
+	//FIXME Don't need this class. Just go directly to existing Show and Episode classes.
+	
 	//=================================================//
 	//		data
 	//=================================================//

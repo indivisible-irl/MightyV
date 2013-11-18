@@ -4,6 +4,7 @@ import com.indivisible.mightyv.util.MyLog;
 
 public class ShowSimple
 {
+	//FIXME Don't need this class. Just go directly to existing Show and Episode classes.
 
 	//=================================================//
 	//		data
