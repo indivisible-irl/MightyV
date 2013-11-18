@@ -8,7 +8,9 @@ import com.indivisible.mightyv.data.Show;
 import com.indivisible.mightyv.util.MyLog;
 import com.tvrage.api.SearchXMLParser;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.View.OnClickListener;
@@ -41,6 +43,7 @@ public class TestSearch extends Activity implements OnClickListener
 		TAG = this.getClass().getSimpleName();
 		
 		initViews();
+		initListView();
 	}
 
 	@Override
@@ -70,21 +73,12 @@ public class TestSearch extends Activity implements OnClickListener
 	}
 	
 	
-	private void performSearch(String searchTerm)
+	private void initListView()
 	{
-		SearchXMLParser search = new SearchXMLParser(searchTerm);
-		shows = search.performSearch();
-		
-		List<String> showDetails = new ArrayList<String>();
-		for (Show show : shows)
-		{
-			showDetails.add(show.toString());
-		}
-		
 		adapter = new ArrayAdapter<String>(
 				this.getApplicationContext(),
 				android.R.layout.simple_list_item_1,
-				showDetails)
+				new ArrayList<String>())
 			{
 				@Override
 				public View getView(int position, View convertView, ViewGroup parent)
@@ -99,6 +93,42 @@ public class TestSearch extends Activity implements OnClickListener
 	}
 	
 	
+	private void performSearch(String searchTerm)
+	{
+		new SearchTask().execute(searchTerm);
+	}
+	
+	//TODO Move to own file
+	class SearchTask extends AsyncTask<String, Void, List<Show> >
+	{
+		@Override
+		protected void onPreExecute()
+		{
+			MyLog.v(TAG, "Beginning SearchTask...");
+			adapter.clear();
+		}
+		
+		@Override
+		protected List<Show> doInBackground(String... searchTerms)
+		{
+			SearchXMLParser search = new SearchXMLParser(searchTerms[0]);
+			shows = search.performSearch();
+			
+			return shows;
+		}
+		
+		@Override
+		protected void onPostExecute(List<Show> shows)
+		{
+			MyLog.v(TAG, "Updating adapter with results: " +shows.size());
+			for (Show show : shows)
+			{
+				adapter.add(show.toString());
+			}
+			adapter.notifyDataSetChanged();
+			Log.v(TAG, "Update complete");
+		}
+	}
 
 
 }
