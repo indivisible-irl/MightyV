@@ -26,6 +26,7 @@ public class ShowDataSource
 	//=================================================//
 	
 	private String TAG;
+	private Context context;
 	private SQLiteDatabase db = null;
 	private DBMediaOpenHelper dbHelper = null;
 	private static final String[] allColumns = {		//REM update allColumns on activation of new fields
@@ -47,6 +48,7 @@ public class ShowDataSource
 	public ShowDataSource(Context context)
 	{
 		TAG = this.getClass().getSimpleName();
+		this.context = context;
 		dbHelper = new DBMediaOpenHelper(context);
 	}
 	
@@ -320,8 +322,6 @@ public class ShowDataSource
 	 */
 	public boolean deleteShow(long showKey)
 	{
-		//FIXME deleting a show should remove all its episodes too
-		
 		// start a transaction so we can revert changes if other than one row is affected
 		db.beginTransaction();
 		try
@@ -334,9 +334,19 @@ public class ShowDataSource
 			// only exactly one row/Show deleted
 			if (rowsAffected == 1)
 			{
-				if (MyLog.verbose) MyLog.v(TAG, "Deleted Show with Key: " +showKey);
-				db.setTransactionSuccessful();
-				return true;
+				// lets delete all it's Episodes too
+				EpisodeDataSource episodes = new EpisodeDataSource(context);
+				if (episodes.deleteAllShowsEpisodes(showKey))
+				{
+					if (MyLog.verbose) MyLog.v(TAG, "Deleted Show with Key: " +showKey);
+					db.setTransactionSuccessful();
+					return true;
+				}
+				else
+				{
+					if (MyLog.warn) MyLog.w(TAG, "Wasn't able to delete Show's Episodes");
+					return false;
+				}
 			}
 			// none or more than one row/Show affected
 			else
