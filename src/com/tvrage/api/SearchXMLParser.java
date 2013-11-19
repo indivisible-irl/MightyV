@@ -12,6 +12,10 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import com.indivisible.mightyv.data.Show;
 import com.indivisible.mightyv.util.MyLog;
 
+/**
+ * Class to perform search for Shows and parse results
+ * @author indiv
+ */
 public class SearchXMLParser extends XMLParser
 {
 	
@@ -31,19 +35,27 @@ public class SearchXMLParser extends XMLParser
 	
 	private List<Show> shows = null;
 	
+	// XML Nodes & Tags
 	private static String rootElement = "Results";
 	private static String showElement = "show";
 	
-	private static String itemRageId  = "showid";
-	private static String itemTitle   = "name";
-	private static String itemStatus  = "status";
-	// implement other fields later
+	private static String itemRageId	= "showid";
+	private static String itemTitle		= "name";
+	private static String itemStatus	= "status";
+	private static String itemLink		= "link";
+	private static String itemCountry	= "country";
+	private static String itemStarted	= "started";
+	private static String itemEnded		= "ended";
 	
 	
 	//=================================================//
 	//		constructor
 	//=================================================//
-
+	
+	/**
+	 * Class to perform search and parse the results into Shows
+	 * @param searchTerm String to search through TVRage.com's collection for
+	 */
 	public SearchXMLParser(String searchTerm)
 	{
 		super();
@@ -59,10 +71,18 @@ public class SearchXMLParser extends XMLParser
 	//		gets & sets
 	//=================================================
 	
+	/**
+	 * Retrieve the Show results from the performed search
+	 * @return List of Shows.
+	 * NULL if no search performed yet.
+	 * Empty List if no results found.
+	 */
 	public List<Show> getShows()
 	{
 		return shows;
 	}
+	
+	//TODO Refactor class to enable use of single instance for multiple searches
 	
 	
 	//=================================================//
@@ -74,6 +94,10 @@ public class SearchXMLParser extends XMLParser
 	 *		protected InputStream getXMLInputStream()
 	 */
 	
+	/**
+	 * Parse InputStream XML and save result Shows
+	 * @param stream InputStream of Search query XML results
+	 */
 	@Override
 	public boolean parseXML(InputStream stream)
 	{
@@ -109,23 +133,39 @@ public class SearchXMLParser extends XMLParser
 						break;
 						
 					case XmlPullParser.END_TAG:
-						if (tagName.equalsIgnoreCase(showElement))
+						if (tagName.equalsIgnoreCase(showElement))			// new Show 
 						{
 							shows.add(show);
 						} 
-						else if (tagName.equalsIgnoreCase(itemRageId))
+						else if (tagName.equalsIgnoreCase(itemRageId))			// tag rageID
 						{
 							show.setRageID(Integer.parseInt(itemText));
 						}
-						else if (tagName.equalsIgnoreCase(itemTitle))
+						else if (tagName.equalsIgnoreCase(itemTitle))			// tag title
 						{
 							show.setTitle(itemText);
 						}
-						else if (tagName.equalsIgnoreCase(itemStatus))
+						else if (tagName.equalsIgnoreCase(itemStatus))			// tag status
 						{
 							show.setStatus(itemText);
 						}
-						else
+						else if (tagName.equalsIgnoreCase(itemLink))			// tag rageLink
+						{
+							show.setRageLink(itemText);
+						}
+						else if (tagName.equalsIgnoreCase(itemCountry))			// tag country
+						{
+							show.setCountry(itemText);
+						}
+						else if (tagName.equalsIgnoreCase(itemStarted))			// tag started
+						{
+							show.setStarted(Integer.parseInt(itemText));
+						}
+						else if (tagName.equalsIgnoreCase(itemEnded))			// tag ended
+						{
+							show.setEnded(Integer.parseInt(itemText));
+						}
+						else													// tag ignored
 						{
 							if (MyLog.debug) MyLog.d(TAG, "Skipped item: " +tagName);
 						}
@@ -157,7 +197,11 @@ public class SearchXMLParser extends XMLParser
 		return false;
 	}
 	
-	
+	/**
+	 * Method that actually grabs the XML and parses the results.
+	 * Should not be run on the UI thread.
+	 * @return List of Shows received from Search
+	 */
 	public List<Show> performSearch()
 	{
 		InputStream XMLStream = getXMLInputStream();
@@ -175,5 +219,35 @@ public class SearchXMLParser extends XMLParser
 		}
 	}
 	
+	
+	//=================================================//
+	//		Example Search XML feed
+	//=================================================//
+	
+	/*
+	 *	<Results>
+	 *		<show>
+	 *			<showid>2930</showid>
+	 *			<name>Buffy the Vampire Slayer</name>
+	 *			<link>http://www.tvrage.com/Buffy_The_Vampire_Slayer</link>
+	 *			<country>US</country>
+	 *			<started>1997</started>
+	 *			<ended>2003</ended>
+	 *			<seasons>7</seasons>
+	 *			<status>Ended</status>
+	 *			<classification>Scripted</classification>
+	 *			<genres>
+	 *				<genre>Action</genre>
+	 *				<genre>Adventure</genre>
+	 *				<genre>Comedy</genre>
+	 *				<genre>Drama</genre>
+	 *				<genre>Mystery</genre>
+	 *				<genre>Sci-Fi</genre>
+	 *			</genres>
+	 *		</show>
+	 *		<show>
+	 *			...
+	 *		</show>
+	 */
 	
 }
