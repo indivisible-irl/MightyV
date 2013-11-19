@@ -48,6 +48,7 @@ public class EpisodeListXMLParser extends XMLParser
 	private static String itemLink		= "link";
 	private static String itemTitle		= "title";
 	
+	
 	//=================================================//
 	//		constructor
 	//=================================================//
@@ -102,7 +103,7 @@ public class EpisodeListXMLParser extends XMLParser
 	 */
 	
 	@Override
-	public boolean parseXML(InputStream stream)
+	protected boolean parseXML(InputStream stream)
 	{
 		XmlPullParserFactory factory = null;
 		XmlPullParser parser = null;
@@ -166,7 +167,7 @@ public class EpisodeListXMLParser extends XMLParser
 						}
 						else if (tagName.equalsIgnoreCase(itemLink))			// tag rageLink
 						{
-							episode.setRageLink(itemText);
+							episode.setRageLink(itemText); 
 						}
 						else													// tag ignored
 						{
@@ -203,18 +204,25 @@ public class EpisodeListXMLParser extends XMLParser
 		return false;
 	}
 	
-	
-	
+	/**
+	 * Method to grab the XML for the supplied Show's Episodes and
+	 * parse the stream for Episodes.
+	 * @return List of parsed Episodes
+	 */
 	public List<Episode> performEpisodeRetrieve()
 	{
 		InputStream stream = getXMLInputStream();
-		if (parseXML(stream))
+		boolean successfulParse = parseXML(stream); 
+		
+		if (successfulParse)
 		{
+			if (MyLog.verbose) MyLog.v(TAG, "Parsed XML EpisodeList, Found episodes: " +episodes.size());
 			return episodes;
 		}
 		else
 		{
-			return null;
+			if (MyLog.error) MyLog.e(TAG, "Failed to retrieve Episodes. Returning empty List");
+			return new ArrayList<Episode>();
 		}
 	}
 	

@@ -105,7 +105,7 @@ public class SearchXMLParser extends XMLParser
 	 * @param stream InputStream of Search query XML results
 	 */
 	@Override
-	public boolean parseXML(InputStream stream)
+	protected boolean parseXML(InputStream stream)
 	{
 		XmlPullParserFactory factory = null;
 		XmlPullParser parser = null;
