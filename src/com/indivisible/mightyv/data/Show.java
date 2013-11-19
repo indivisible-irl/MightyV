@@ -6,16 +6,15 @@ public class Show {
 	//		data
 	//=================================================//
 	
-	private long   showKey = -1;		// db table row id (primary key)
-	private int    rageID = -1; 		// always int?  //TODO test all rageIDs for possible types
-//	private String rageLink = null;		// full link or tail end? can create with id??  //TODO research this
-	private String title = null;
-//	private String country = null;		// show flags in listview/listings? need imgs  //TODO gather all possible codes
-//	private String started = null;		// just year? use int??
-//	private String ended = null;		// just year.
-	private String status = null;		// map status to traffic light icons for list display //TODO gather possible options
+	private long   showKey  = -1;		// db table row id (primary key)
+	private int    rageID   = -1; 		// always int?							//TODO test all rageIDs for possible types
+	private String rageLink = null;		// full link or tail end? can create with id??  //TODO research link formats
+	private String title    = null;
+	private String country  = null;		// show flags in listview/listings? need imgs   //TODO gather all possible codes
+	private int    started  = -1;		// just year
+	private int    ended    = -1;		// just year  //TODO test values for current/ended Shows. Set to 0 based on 'status'?
+	private String status   = null;		// map status to traffic light icons for list display //TODO gather possible options
 //	private String[] genres = null;		// move to own table and link int[] FK (add as discovered - rm when unused after delete?)
-//	private String runtime = null;		// care?
 	
 //	private String seriesImg = null;	// need a source (tvrage/feeds/full_show_info.php? : Show/image)  //REM resize images
 //	private Boolean starred = null;
@@ -29,7 +28,7 @@ public class Show {
 	 */
 	public Show()
 	{
-		// default
+		// default constructor
 	}
 	
 	/**
@@ -119,6 +118,75 @@ public class Show {
 		this.status = status;
 	}
 	
+	/**
+	 * Retrieve the TVRage.com's link for the show
+	 * @return String representation of link's URL
+	 */
+	public String getRageLink()
+	{
+		return this.rageLink;
+	}
+	/**
+	 * Set the Show's TVRage.com link
+	 * @param rageLink
+	 */
+	public void setRageLink(String rageLink)
+	{
+		this.rageLink = rageLink;
+	}
+	
+	/**
+	 * Retrieve the Show's country
+	 * @return Country code
+	 */
+	public String getCountry()
+	{
+		return this.country;
+	}
+	/**
+	 * Set the Show's country code
+	 * @param country
+	 */
+	public void setCountry(String country)
+	{
+		this.country = country;
+	}
+	
+	/**
+	 * Retrieve the Show's start year
+	 * @return Year Show started
+	 */
+	public int getStarted()
+	{
+		return this.started;
+	}
+	/**
+	 * Set the year the Show started
+	 * @param started int
+	 */
+	public void setStarted(int started)
+	{
+		this.started = started;
+	}
+	
+	/**
+	 * Retrieve the year the Show ended.
+	 * '0' if still running. Maybe.
+	 * @return
+	 */
+	public int getEnded()
+	{
+		return this.ended;
+	}
+	/**
+	 * Set the year the Show ended.
+	 * Set to 0 if still running.
+	 * @param ended
+	 */
+	public void setEnded(int ended)
+	{
+		this.ended = ended;
+	}
 	
 	//=================================================//
 	//		public methods
@@ -128,12 +196,16 @@ public class Show {
 	//   Will still be able to return something even if the Show has no info.
 	@Override
 	public String toString()
-	{
+	{ 
 		StringBuilder sb = new StringBuilder();
 		
 		if (this.showKey != -1)
 		{
 			sb.append(showKey).append(": ");
+		}
+		else if (this.rageID != -1)
+		{
+			sb.append("[").append(rageID).append("]: ");
 		}
 		else
 		{
