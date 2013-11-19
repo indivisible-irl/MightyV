@@ -9,6 +9,8 @@ import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import android.net.Uri;
+
 import com.indivisible.mightyv.data.Show;
 import com.indivisible.mightyv.util.MyLog;
 
@@ -36,7 +38,7 @@ public class SearchXMLParser extends XMLParser
 	private List<Show> shows = null;
 	
 	// XML Nodes & Tags
-	private static String rootElement = "Results";
+//	private static String rootElement = "Results";	//ASK not needed?
 	private static String showElement = "show";
 	
 	private static String itemRageId	= "showid";
@@ -56,14 +58,10 @@ public class SearchXMLParser extends XMLParser
 	 * Class to perform search and parse the results into Shows
 	 * @param searchTerm String to search through TVRage.com's collection for
 	 */
-	public SearchXMLParser(String searchTerm)
+	public SearchXMLParser()
 	{
 		super();
-		
-		//ASK set search here or in performSearch()??
-		String urlStr = String.format(urlBase, searchTerm);
-		this.setURL(urlStr);
-		this.setRootElement(rootElement);
+		this.TAG = this.getClass().getSimpleName();
 	}
 	
 	
@@ -82,7 +80,15 @@ public class SearchXMLParser extends XMLParser
 		return shows;
 	}
 	
-	//TODO Refactor class to enable use of single instance for multiple searches
+	/**
+	 * Format the URL for the desired search
+	 * @param searchTerm String search
+	 */
+	public void setSearch(String searchTerm)
+	{
+		String urlStr = String.format(urlBase, Uri.encode(searchTerm));
+		this.setURL(urlStr);
+	}
 	
 	
 	//=================================================//
@@ -109,12 +115,15 @@ public class SearchXMLParser extends XMLParser
 		String itemText = null;
 		try
 		{
+			// prepare ParserFactory
 			factory = XmlPullParserFactory.newInstance();
 			factory.setNamespaceAware(true);
 			parser = factory.newPullParser();
 			
+			// assign the InputStream to the Factory
 			parser.setInput(stream, null);
 			
+			// parse the XML input
 			int eventType = parser.getEventType();
 			while (eventType != XmlPullParser.END_DOCUMENT)
 			{
