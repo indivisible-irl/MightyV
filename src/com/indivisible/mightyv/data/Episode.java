@@ -11,14 +11,14 @@ public class Episode {
 	//=================================================//
 	
 	// init with default values for toString() method testing
-	private long episodeKey = -1;	//DONE use DAO to ensure always exists in db and has epKey set 
+	private long episodeKey = -1; 
 	private long showKey    = -1;
 	private int seasonNum   = -1;	//TODO run through TVRage entries to test for non integer values
-									//ASK use 0 for specials and out of season airings? Order after
+									//ASK use 0 for specials and out of season airings? Order after. Test how TVRage numbers them
 	private int episodeNum  = -1;	//todo same as for seasonNum
 	private String title    = null;
-//	private String aired;
-//	private String tvrageLink;
+	private String aired	= null;
+	private String rageLink = null;
 	
 //	private boolean watched;
 	
@@ -139,6 +139,40 @@ public class Episode {
 	public void setTitle(String title)
 	{
 		this.title = title;
+	}
+	
+	/**
+	 * Get the Episode's airdate
+	 * @return
+	 */
+	public String getAired()
+	{
+		return this.aired;
+	}
+	/**
+	 * Set the Episode's airdate
+	 * @param aired
+	 */
+	public void setAired(String aired)
+	{
+		this.aired = aired;
+	}
+	
+	/**
+	 * Get the Episode's TVRage.com Link
+	 * @return
+	 */
+	public String getRageLink()
+	{
+		return this.rageLink;
+	}
+	/**
+	 * Set the Episode's TVRage.com Link
+	 * @param rageLink
+	 */
+	public void setRageLink(String rageLink)
+	{
+		this.rageLink = rageLink;
 	}
 	
 	
