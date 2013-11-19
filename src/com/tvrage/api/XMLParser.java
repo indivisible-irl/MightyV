@@ -32,6 +32,9 @@ public class XMLParser
 	//		constructor
 	//=================================================//
 	
+	/**
+	 * Parent class for all XML Parsers
+	 */
 	public XMLParser()
 	{
 		this.TAG = this.getClass().getSimpleName();
@@ -42,14 +45,26 @@ public class XMLParser
 	//		gets & sets
 	//=================================================//
 	
+	/**
+	 * Retrieve the instance's URL
+	 * @return URL pointing to the desired XML resource
+	 */
 	public URL getURL()
 	{
 		return this.url;
 	}
+	/**
+	 * Set the URL that points to the desired XML resource
+	 * @param url Formed URL
+	 */
 	public void setURL(URL url)
 	{
 		this.url = url;
 	}
+	/**
+	 * Set (and form) the URL pointing to the desired XML resource
+	 * @param urlStr String URL to be formed on set
+	 */
 	public void setURL(String urlStr)
 	{
 		try
@@ -62,10 +77,18 @@ public class XMLParser
 		}
 	}
 	
+	/**
+	 * Retrieve the XML's root node's name
+	 * @return Name of XML doc's root node
+	 */
 	public String getRootElement()
 	{
 		return this.rootElement;
 	}
+	/**
+	 * Set the XML doc's root node name
+	 * @param rootElement
+	 */
 	public void setRootElement(String rootElement)
 	{
 		this.rootElement = rootElement;
@@ -76,11 +99,16 @@ public class XMLParser
 	//		methods
 	//=================================================//
 	
+	/**
+	 * Open and pass on an InputStream containing the resource's XML data.
+	 * @return Stream of XML data set using object's this.url
+	 */
 	protected InputStream getXMLInputStream()
 	{
 		InputStream inputStream = null;
 		try
 		{
+			// Open connection and set InputStream
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 	        conn.setRequestMethod("GET");
 	        conn.setDoInput(true);
@@ -94,6 +122,11 @@ public class XMLParser
 		return inputStream;
 	}
 	
+	/**
+	 * Method to Override in child classes to parse XML input for desired info
+	 * @param stream InputStream
+	 * @return boolean of successful parse
+	 */
 	protected boolean parseXML(InputStream stream)
 	{
 		throw new UnsupportedOperationException("Implement/Override in child class");
