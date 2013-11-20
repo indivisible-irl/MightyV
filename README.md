@@ -26,6 +26,11 @@ Planned functionality
 Changelog
 ---------
 
+- v0.0.2  |  2013-11-20  |  Working Searching
+  - Functional XML Download (InputStream)
+  - Functional XML Parsing
+  - Functional Show Searching (not extensively tested)
+  - Started work on future UI
 - v0.0.1  |  2013-11-10  |  Nothing to test yet
   - Uploading my local work to date onto GitHub for anyone to peruse.
   - Have the bones of the Show and Episode classes and database handling knocked out
@@ -35,12 +40,12 @@ Changelog
 Listings Source
 ---------------
 
-This App gets its TV listings from [TVRage.com](http://services.tvrage.com/info.php?page=main)'s open api. All listings herein are based on the accuracy of their sources and the kindness of their fuzzy, warm hearts.
+This App gets its information and TV listings from [TVRage.com](http://services.tvrage.com/info.php?page=main)'s open api. All listings herein are based on the accuracy of their sources and the kindness of their fuzzy, warm hearts.
 
 
 Copyright
 ---------
 
-Open source released (when it gets released) under the Apache V2 License.
+Source released under the Apache V2 License and can be classed as FOSS.
 To summarise it though: you can do what you like with the code I write but it's not my fault if something breaks on you.
-Full licence text is available in the codebase here.
+Full licence text is available in the codebase here (/LICENSE file)
