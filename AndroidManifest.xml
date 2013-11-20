@@ -5,7 +5,7 @@
     android:versionName="1.0" >
 
     <uses-sdk
-        android:minSdkVersion="13"
+        android:minSdkVersion="15"
         android:targetSdkVersion="19" />
 
     <!-- Permissions -->
@@ -18,9 +18,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name="com.indivisible.mightyv.MainActivity"
+            android:name="com.indivisible.mightyv.activities.ShowSearchActivity"
             android:label="@string/app_name" >
         </activity>
+        
+
+        <!-- Testing Activities -->
         <activity
             android:name="com.indivisible.mightyv.activities.testing.TestMenu"
             android:label="@string/app_name" >
@@ -29,8 +32,6 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-
-        <!-- Testing Activities -->
         <activity
             android:name="com.indivisible.mightyv.activities.testing.TestShows"
             android:label="@string/app_name" >
