@@ -192,6 +192,15 @@ public class Show {
 	//		public methods
 	//=================================================//
 	
+	/**
+	 * Tests if Show is in/from database or not
+	 * @return true if show is from the database
+	 */
+	public boolean isSavedShow()
+	{
+		return (this.rageID == -1);
+	}
+	
 	// Override the default implementation from java.lang.Object in favour of a custom representation
 	//   Will still be able to return something even if the Show has no info.
 	@Override
@@ -235,6 +244,24 @@ public class Show {
 		sb.append(showKey).append(" : ").append(title).append("\n");
 		sb.append(rageID).append(", ").append(status);
 		return sb.toString();
+	}
+	
+	
+	public String getYearsString()
+	{
+		String template = "%s - %s";
+		String startStr;
+		String endedStr;
+		if (started < 1)
+			startStr = "??";
+		else
+			startStr = Integer.toString(this.started);
+		if (ended < 1)
+			endedStr = "now";
+		else
+			endedStr = Integer.toString(this.ended);
+		
+		return String.format(template, startStr, endedStr);
 	}
 	
 	//=================================================//

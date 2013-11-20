@@ -95,6 +95,7 @@ public class TestSearch extends Activity implements OnClickListener
 	
 	private void performSearch(String searchTerm)
 	{
+		if (MyLog.debug) MyLog.d(TAG, "Triggering search. Term: " +searchTerm);
 		new SearchTask().execute(searchTerm);
 	}
 	
