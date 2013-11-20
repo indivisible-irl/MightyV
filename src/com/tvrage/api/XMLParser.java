@@ -8,6 +8,22 @@ import java.net.URL;
 
 import com.indivisible.mightyv.util.MyLog;
 
+
+//=================================================//
+//		TVRage.com XML Feeds
+//=================================================//
+
+/*
+ * Search			• http://services.tvrage.com/feeds/search.php?show=SHOWNAME
+ * Detailed Search		• http://services.tvrage.com/feeds/full_search.php?show=SHOWNAME
+ * Show Info			• http://services.tvrage.com/feeds/showinfo.php?sid=SHOWID
+ * Episode List			• http://services.tvrage.com/feeds/episode_list.php?sid=SHOWID
+ * Episode Info			• http://services.tvrage.com/feeds/episodeinfo.php?show=Show Name&exact=1&ep=SEASONxEPISODE
+ * Show Info + Ep List		• http://services.tvrage.com/feeds/full_show_info.php?sid=SHOWID
+ * Full Show List		• http://services.tvrage.com/feeds/show_list.php
+ */
+
+
 /**
  * Parent class to be extended for individual XML Feed Parsing
  * @author indiv
@@ -37,7 +53,7 @@ public class XMLParser
 	 */
 	public XMLParser()
 	{
-		this.TAG = this.getClass().getSimpleName();
+		//this.TAG = this.getClass().getSimpleName();
 	}
 	
 	

@@ -98,7 +98,7 @@ public class TestSearch extends Activity implements OnClickListener
 		new SearchTask().execute(searchTerm);
 	}
 	
-	//TODO Move to own file
+	//REM Copy into final Search Activity
 	class SearchTask extends AsyncTask<String, Void, List<Show> >
 	{
 		@Override
@@ -111,7 +111,8 @@ public class TestSearch extends Activity implements OnClickListener
 		@Override
 		protected List<Show> doInBackground(String... searchTerms)
 		{
-			SearchXMLParser search = new SearchXMLParser(searchTerms[0]);
+			SearchXMLParser search = new SearchXMLParser();
+			search.setSearch(searchTerms[0]);
 			shows = search.performSearch();
 			
 			return shows;
