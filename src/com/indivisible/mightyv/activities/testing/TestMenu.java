@@ -34,7 +34,8 @@ public class TestMenu extends ListActivity
 	String[] testActivities = new String[] {
 			"activities.testing.TestShows",
 			"activities.testing.TestEpisodes",
-			"activities.testing.TestSearch"
+			"activities.testing.TestSearch",
+			"activities.ShowSearchActivity"
 		};
 	
 	
