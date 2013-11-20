@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.indivisible.mightyv.R;
 import com.indivisible.mightyv.data.Show;
-import com.indivisible.mightyv.fragments.ShowListFragment;
+//import com.indivisible.mightyv.fragments.ShowListFragment;
 import com.indivisible.mightyv.util.MyLog;
 import com.indivisible.mightyv.util.ShowArrayAdapter;
 import com.tvrage.api.SearchXMLParser;
@@ -129,12 +129,12 @@ public class ShowSearchActivity extends Activity implements OnClickListener
 		protected void onPostExecute(List<Show> shows)
 		{
 			MyLog.v(TAG, "Updating adapter with results: " +shows.size());
-			for (Show show : shows)
-			{
-				if (MyLog.debug) MyLog.d(TAG, "Adding show: " +show.toString());
-				adapter.add(show);
-			}
-//			adapter.addAll(shows);
+//			for (Show show : shows)
+//			{
+//				if (MyLog.debug) MyLog.d(TAG, "Adding show: " +show.toString());
+//				adapter.add(show);
+//			}
+			adapter.addAll(shows);
 			adapter.notifyDataSetChanged();
 			Log.v(TAG, "Update complete");
 			
