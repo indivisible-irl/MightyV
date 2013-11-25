@@ -1,50 +1,61 @@
 package com.indivisible.mightyv.activities;
 
-import java.util.List;
-import android.app.Activity;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Button;
+import android.support.v4.app.FragmentActivity;
+import android.widget.Toast;
 import com.indivisible.mightyv.R;
-import com.indivisible.mightyv.data.Show;
+import com.indivisible.mightyv.fragments.ShowAddButtonsFragment;
+import com.indivisible.mightyv.fragments.ShowListFragment;
 
 /**
  * @author indiv
  * 
  */
-public class ShowAddActivity extends Activity
+public class ShowAddActivity
+        extends FragmentActivity
+        implements ShowAddButtonsFragment.OnButtonSelectedListener
 {
 
-    List<Show> showAddQueue;
-
-    View mainSection;
-    Button bClearShows;
-    Button bFindShow;
+    ShowListFragment showsFragment;
+    ShowAddButtonsFragment buttonsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.show_search_activity);
+        setContentView(R.layout.show_add_activity);
 
-        initViews();
+        initFragments();
     }
 
-    private void initViews()
+    private void initFragments()
     {
-        mainSection = findViewById(R.id.show_add_mainSection);
-        bClearShows = (Button) findViewById(R.id.show_add_clearlist);
-        bFindShow = (Button) findViewById(R.id.show_add_newSearch);
+        showsFragment = (ShowListFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.show_add_fragment_list);
+        buttonsFragment = (ShowAddButtonsFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.show_add_fragment_buttons);
+
+
     }
 
-    private void setinfoView()
+    @Override
+    public void onButtonSelected(int viewId)
     {
+        switch (viewId)
+        {
+            case R.id.show_fragment_add_clearlist:
+                Toast.makeText(this, "selected clearlist", Toast.LENGTH_SHORT)
+                        .show();
+                break;
 
-    }
+            case R.id.show_fragment_add_newSearch:
+                Toast.makeText(this, "selected newsearch", Toast.LENGTH_SHORT)
+                        .show();
+                break;
 
-    private void setListView()
-    {
-
+            default:
+                break;
+        }
     }
 
 }

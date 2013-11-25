@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+    
+    <fragment 
+        android:name="com.indivisible.mightyv.fragments.ShowListFragment"
+        android:id="@+id/show_add_fragment_list"
+        android:layout_width="fill_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        />
+    <fragment 
+        android:name="com.indivisible.mightyv.fragments.ShowAddButtonsFragment"
+        android:id="@+id/show_add_fragment_buttons"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        />
+    
+</LinearLayout>
