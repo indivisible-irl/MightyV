@@ -8,9 +8,9 @@ import java.net.URL;
 import java.util.List;
 import com.indivisible.mightyv.util.MyLog;
 
-// =================================================//
-// TVRage.com XML Feeds
-// =================================================//
+//=================================================//
+//    TVRage.com XML Feeds
+//=================================================//
 
 /*
  * Search • http://services.tvrage.com/feeds/search.php?show=SHOWNAME Detailed
@@ -31,9 +31,9 @@ import com.indivisible.mightyv.util.MyLog;
 public class XMLParser
 {
 
-    // =================================================//
-    // data
-    // =================================================//
+    //=================================================//
+    //    data
+    //=================================================//
 
     protected String TAG;
     protected URL url = null;
@@ -41,9 +41,9 @@ public class XMLParser
 
     // REM save individual tags in child classes
 
-    // =================================================//
-    // constructor
-    // =================================================//
+    //=================================================//
+    //    constructor
+    //=================================================//
 
     /**
      * Parent class for all XML Parsers
@@ -53,9 +53,9 @@ public class XMLParser
         // default constructor
     }
 
-    // =================================================//
-    // gets & sets
-    // =================================================//
+    //=================================================//
+    //    gets & sets
+    //=================================================//
 
     /**
      * Retrieve the instance's URL
@@ -102,9 +102,9 @@ public class XMLParser
                 "Implement/Override in child class");
     }
 
-    // =================================================//
-    // methods
-    // =================================================//
+    //=================================================//
+    //    methods
+    //=================================================//
 
     /**
      * Open and pass on an InputStream containing the resource's XML data.

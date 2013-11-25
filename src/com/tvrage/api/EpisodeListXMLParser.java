@@ -14,9 +14,9 @@ import com.indivisible.mightyv.util.MyLog;
 public class EpisodeListXMLParser extends XMLParser
 {
 
-    // =================================================//
-    // data
-    // =================================================//
+    //=================================================//
+    //    data
+    //=================================================//
 
     /*
      * inherits: protected String TAG; protected URL url = null; protected
@@ -44,9 +44,9 @@ public class EpisodeListXMLParser extends XMLParser
     private static String ITEM_LINK = "link";
     private static String ITEM_TITLE = "title";
 
-    // =================================================//
-    // constructor
-    // =================================================//
+    //=================================================//
+    //    constructor
+    //=================================================//
 
     /**
      * Class to grab and Parse XML for Show's Episodes
@@ -62,9 +62,9 @@ public class EpisodeListXMLParser extends XMLParser
         this.parentShowID = show.getKey();
     }
 
-    // =================================================//
-    // gets & sets
-    // =================================================//
+    //=================================================//
+    //    gets & sets
+    //=================================================//
 
     /**
      * Retrieve Parsed Episodes from last run. Returns NULL if never run,
@@ -93,9 +93,9 @@ public class EpisodeListXMLParser extends XMLParser
         this.parentShowID = show.getKey();
     }
 
-    // =================================================//
-    // methods
-    // =================================================//
+    //=================================================//
+    //    methods
+    //=================================================//
 
     /*
      * inherits: protected InputStream getXMLInputStream()
@@ -235,25 +235,33 @@ public class EpisodeListXMLParser extends XMLParser
         }
     }
 
-    // =================================================//
-    // Example EpisodeList XML feed
-    // =================================================//
+    //=================================================//
+    //    Example EpisodeList XML feed
+    //=================================================//
 
     /*
-     * <Show> <name>Buffy the Vampire Slayer</name>
-     * <totalseasons>7</totalseasons> <Episodelist>
-     * 
-     * <Season no="1"> <episode> <epnum>1</epnum> <seasonnum>01</seasonnum>
-     * <prodnum>4V01</prodnum> <airdate>1997-03-10</airdate>
-     * <link>http://www.tvrage
-     * .com/Buffy_The_Vampire_Slayer/episodes/28077</link> <title>Welcome to
-     * the Hellmouth (1)</title> </episode> <episode> <epnum>2</epnum>
-     * <seasonnum>02</seasonnum> <prodnum>4V02</prodnum>
-     * <airdate>1997-03-10</airdate>
-     * <link>http://www.tvrage.com/Buffy_The_Vampire_Slayer
-     * /episodes/28078</link> <title>The Harvest (2)</title> </episode> ...
-     * </Season> <Season no="2"> ... </Season>
-     * 
-     * </Episodelist> </Show>
+     *  <Show>
+     *      <name>Buffy the Vampire Slayer</name>
+     *      <totalseasons>7</totalseasons>
+     *      <Episodelist>
+     *          <Season no="1">
+     *              <episode>
+     *                  <epnum>1</epnum>
+     *                  <seasonnum>01</seasonnum>
+     *                  <prodnum>4V01</prodnum>
+     *                  <airdate>1997-03-10</airdate>
+     *                  <link>http://www.tvrage.com/Buffy_The_Vampire_Slayer/episodes/28077</link>
+     *                  <title>Welcome to the Hellmouth (1)</title>
+     *              </episode>
+     *              <episode>
+     *                  ...
+     *              </episode>
+     *              ...
+     *          </Season>
+     *          <Season no="2">
+     *              ...
+     *          </Season>
+     *      </Episodelist>
+     *  </Show>
      */
 }

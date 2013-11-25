@@ -93,7 +93,8 @@ public class SearchXMLParser extends XMLParser
     //=================================================//
 
     /*
-     * inherits: protected InputStream getXMLInputStream()
+     * inherits:
+     *     protected InputStream getXMLInputStream()
      */
 
     /**
@@ -238,15 +239,31 @@ public class SearchXMLParser extends XMLParser
     //=================================================//
 
     /*
-     * <Results> <show> <showid>2930</showid> <name>Buffy the Vampire
-     * Slayer</name>
-     * <link>http://www.tvrage.com/Buffy_The_Vampire_Slayer</link>
-     * <country>US</country> <started>1997</started> <ended>2003</ended>
-     * <seasons>7</seasons> <status>Ended</status>
-     * <classification>Scripted</classification> <genres>
-     * <genre>Action</genre> <genre>Adventure</genre> <genre>Comedy</genre>
-     * <genre>Drama</genre> <genre>Mystery</genre> <genre>Sci-Fi</genre>
-     * </genres> </show> <show> ... </show>
+     *  <Results>
+     *      <show>
+     *          <showid>2930</showid>
+     *          <name>Buffy the Vampire Slayer</name>
+     *          <link>http://www.tvrage.com/Buffy_The_Vampire_Slayer</link>
+     *          <country>US</country>
+     *          <started>1997</started>
+     *          <ended>2003</ended>
+     *          <seasons>7</seasons>
+     *          <status>Ended</status>
+     *          <classification>Scripted</classification>
+     *          <genres>
+     *              <genre>Action</genre>
+     *              <genre>Adventure</genre>
+     *              <genre>Comedy</genre>
+     *              <genre>Drama</genre>
+     *              <genre>Mystery</genre>
+     *              <genre>Sci-Fi</genre>
+     *          </genres>
+     *      </show>
+     *      <show>
+     *          ...
+     *      </show>
+     *      ...
+     *  </Results>
      */
 
 }
