@@ -96,6 +96,11 @@ public class XMLParser
         }
     }
 
+    /**
+     * Method to retrieve all parsed results. Override in child class
+     * 
+     * @return UnsupportedOperationException
+     */
     public List<?> getResults()
     {
         throw new UnsupportedOperationException(

@@ -93,6 +93,17 @@ public class EpisodeListXMLParser extends XMLParser
         this.parentShowID = show.getKey();
     }
 
+    /**
+     * Set the ID of the Show the XMLParser should target. Must be set before
+     * attempting to grab any XML source.
+     * 
+     * @param showkey
+     */
+    public void setShow(long showkey)
+    {
+        this.parentShowID = showkey;
+    }
+
     //=================================================//
     //    methods
     //=================================================//
