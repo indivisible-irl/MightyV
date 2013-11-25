@@ -27,7 +27,7 @@ public class SearchShowEntryDialog extends DialogFragment
                              ViewGroup container,
                              Bundle savedInstanceState)
     {
-        View view = inflater.inflate(R.layout.search_show_dialog_searchterm,
+        View view = inflater.inflate(R.layout.show_search_dialog_searchterm,
                 container);
         etSearchTerm = (EditText) view
                 .findViewById(R.id.search_entry_searchTerm);
