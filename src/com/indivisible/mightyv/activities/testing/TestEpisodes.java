@@ -63,7 +63,7 @@ public class TestEpisodes extends Activity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_test_episodes);
+		setContentView(R.layout.test_activity_episodes);
 
 		TAG = this.getClass().getSimpleName();
 		episodeSource = new EpisodeDataSource(this.getApplicationContext());

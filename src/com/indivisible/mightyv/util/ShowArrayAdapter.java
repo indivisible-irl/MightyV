@@ -27,7 +27,7 @@ public class ShowArrayAdapter extends ArrayAdapter<Show>
 	
 	public ShowArrayAdapter(Context context, List<Show> shows)
 	{
-		super(context, R.layout.row_show_simple, shows);
+		super(context, R.layout.show_row_simple, shows);
 		
 		this.TAG = this.getClass().getSimpleName();
 		this.context = context;
@@ -45,7 +45,7 @@ public class ShowArrayAdapter extends ArrayAdapter<Show>
 		LayoutInflater inflater =
 				(LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 		
-		View rowShowSimple = inflater.inflate(R.layout.row_show_simple, parent, false);
+		View rowShowSimple = inflater.inflate(R.layout.show_row_simple, parent, false);
 	    
 		TextView showTitle   = (TextView)  rowShowSimple.findViewById(R.id.row_showsimple_text_title);
 	    TextView showStatus  = (TextView)  rowShowSimple.findViewById(R.id.row_showsimple_text_status);

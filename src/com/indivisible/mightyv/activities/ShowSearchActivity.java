@@ -59,7 +59,7 @@ public class ShowSearchActivity extends Activity implements OnClickListener
 		TAG = this.getClass().getSimpleName();
 		if (MyLog.debug) MyLog.d(TAG, "Starting " +TAG);
 		
-		setContentView(R.layout.activity_show_search);
+		setContentView(R.layout.test_activity_shows_search);
 		init();
 	}
 

@@ -38,7 +38,7 @@ public class TestSearch extends Activity implements OnClickListener
 	protected void onCreate(Bundle savedInstanceState)
 	{
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.activity_test_search);
+		setContentView(R.layout.test_activity_search);
 		
 		TAG = this.getClass().getSimpleName();
 		
