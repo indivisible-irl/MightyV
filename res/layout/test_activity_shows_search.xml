@@ -8,23 +8,13 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     android:orientation="vertical" >
     
-    <!--  ListView (TODO or PlaceHolder if no results)  -->
+    <!--  ListView (TODO: or PlaceHolder if no results)  -->
     <ListView 
         android:id="@+id/show_search_listview_results"
         android:layout_width="fill_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
         />
-    
-    <!--
-    <fragment
-        android:id="@+id/show_search_listfragment_addqueue"
-        android:layout_width="fill_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        class="com.indivisible.mightyv.fragments.ShowListFragment"
-        />
-    -->
     
     <!--  Search bar part -->
     <LinearLayout
