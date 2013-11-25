@@ -18,7 +18,7 @@ public class MyLog
 	//=================================================//
 	
 	// log tag prefix
-	//private static final String TAG_PREFIX = "MightyV:";
+	private static final String TAG_PREFIX = "mV:";
 	
 	// application wide logging level  //TODO move to Preferences (once they exist [and in an "advanced" section])
 	public static final int LOG_LEVEL = 10;		// set to -1 to disable all logging (not recommended)
@@ -80,8 +80,8 @@ public class MyLog
 	// format tag for log entry
 	private static final String formattedTag(String tag)
 	{
-		//return TAG_PREFIX.concat(tag);
-		return tag;
+		return TAG_PREFIX.concat(tag);
+		//return tag;
 	}
 	
 	
