@@ -16,8 +16,9 @@ public class ShowAddActivity
         implements ShowAddButtonsFragment.OnButtonSelectedListener
 {
 
-    ShowListFragment showsFragment;
-    ShowAddButtonsFragment buttonsFragment;
+    private String TAG = this.getClass().getSimpleName();
+    private ShowListFragment showsFragment;
+    private ShowAddButtonsFragment buttonsFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState)
@@ -57,5 +58,6 @@ public class ShowAddActivity
                 break;
         }
     }
+
 
 }
