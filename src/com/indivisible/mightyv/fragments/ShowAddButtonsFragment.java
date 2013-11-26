@@ -72,8 +72,7 @@ public class ShowAddButtonsFragment
     {
         super.onAttach(activity);
 
-        // This makes sure that the container activity has implemented
-        // the callback interface. If not, it throws an exception
+        // Ensure that the parent activity has implemented the our interface.
         try
         {
             callback = (OnButtonSelectedListener) activity;
