@@ -6,10 +6,12 @@ package com.indivisible.mightyv.fragments;
 import java.util.ArrayList;
 import java.util.List;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import com.indivisible.mightyv.data.Show;
+import com.indivisible.mightyv.dialogs.SelectShowDialog;
 import com.indivisible.mightyv.util.MyLog;
 import com.tvrage.api.SearchXMLParser;
 
@@ -28,6 +30,7 @@ public class ShowRageSearchFragment
     private String TAG;
     private String searchTerm;
     private List<Show> showResults = null;
+    private Context appContext;
 
 
     @Override
@@ -35,12 +38,21 @@ public class ShowRageSearchFragment
     {
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName();
+        appContext = this.getActivity().getApplicationContext();
+    }
+
+    // Parent Activity must implement our interface
+    public interface OnShowChosenListener
+    {
+
+        public void onShowChosen(Show chosenShow);
     }
 
     /**
      * Get the results from the last performed search
      * 
-     * @return List of Shows
+     * @return List of Shows. Null if search not performed, Empty if no
+     *         results
      */
     public List<Show> getResults()
     {
@@ -53,6 +65,7 @@ public class ShowRageSearchFragment
             if (MyLog.warn) MyLog.w(TAG, "no results, list is empty");
         }
         // return list, whatever state it's in
+        //REM test for null to indicate no search performed
         return showResults;
     }
 
@@ -78,8 +91,8 @@ public class ShowRageSearchFragment
             extends AsyncTask<String, Void, List<Show>>
     {
 
-        private ProgressDialog progressDialog = new ProgressDialog(getActivity()
-                .getApplicationContext());
+        private ProgressDialog progressDialog = new ProgressDialog(appContext);
+        private SelectShowDialog selectDialog;
 
 
         @Override
@@ -106,6 +119,22 @@ public class ShowRageSearchFragment
         protected void onPostExecute(List<Show> shows)
         {
             if (progressDialog.isShowing()) progressDialog.dismiss();
+
+            if (shows == null)
+            {
+                if (MyLog.error) MyLog.e(TAG, "search results came back null");
+            }
+            else if (shows.size() == 0)
+            {
+                if (MyLog.warn) MyLog.w(TAG, "search results came back empty");
+            }
+            else
+            {
+                selectDialog = new SelectShowDialog(appContext, shows);
+                selectDialog.show();
+            }
         }
+
+
     }
 }

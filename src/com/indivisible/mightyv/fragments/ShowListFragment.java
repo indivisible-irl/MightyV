@@ -36,8 +36,7 @@ public class ShowListFragment
                              Bundle savedInstanceState)
     {
         shows = new ArrayList<Show>();
-        adapter = new ShowArrayAdapter(this.getActivity()
-                .getApplicationContext(), shows);
+        adapter = new ShowArrayAdapter(this.getActivity().getApplicationContext(), shows);
 
         setListAdapter(adapter);
 
@@ -49,8 +48,7 @@ public class ShowListFragment
     //=================================================//
 
     @Override
-    public void
-            onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
+    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
     {
         Show selectedShow = adapter.getItem(getSelectedItemPosition());
         // Display Show details etc
@@ -61,15 +59,13 @@ public class ShowListFragment
 
 
     @Override
-    public boolean onItemLongClick(AdapterView<?> arg0,
-                                   View arg1,
-                                   int arg2,
-                                   long arg3)
+    public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
     {
         Show selectedShow = adapter.getItem(getSelectedItemPosition());
         // Remove show from list
         adapter.remove(selectedShow);
         return true;
     }
+
 
 }
