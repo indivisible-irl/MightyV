@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.indivisible.mightyv.R;
 import com.indivisible.mightyv.data.Show;
+import com.indivisible.mightyv.dialogs.SearchShowEntryDialog;
 import com.indivisible.mightyv.util.MyLog;
 import com.tvrage.api.SearchXMLParser;
 
@@ -35,7 +36,7 @@ public class ShowAddButtonsFragment
     private Button bClearList;
     private Button bNewSearch;
 
-    private OnButtonSelectedListener callback;
+    private OnButtonSelectedListener listener;
 
     //=================================================//
     //    Fragment Methods
@@ -57,10 +58,8 @@ public class ShowAddButtonsFragment
                                      container,
                                      false);
 
-        bClearList = (Button) view
-                .findViewById(R.id.show_fragment_add_clearlist);
-        bNewSearch = (Button) view
-                .findViewById(R.id.show_fragment_add_newSearch);
+        bClearList = (Button) view.findViewById(R.id.show_fragment_add_clearlist);
+        bNewSearch = (Button) view.findViewById(R.id.show_fragment_add_newSearch);
         bClearList.setOnClickListener(this);
         bNewSearch.setOnClickListener(this);
 
@@ -75,13 +74,20 @@ public class ShowAddButtonsFragment
         // Ensure that the parent activity has implemented the our interface.
         try
         {
-            callback = (OnButtonSelectedListener) activity;
+            listener = (OnButtonSelectedListener) activity;
         }
         catch (ClassCastException e)
         {
             throw new ClassCastException(activity.toString()
                     + " must implement OnButtonSelectedListener");
         }
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        listener = null;
     }
 
 
@@ -107,15 +113,12 @@ public class ShowAddButtonsFragment
         switch (v.getId())
         {
             case R.id.show_fragment_add_clearlist:
-                callback.onButtonSelected(v.getId());
+                listener.onButtonSelected(v.getId());
                 break;
 
             case R.id.show_fragment_add_newSearch:
-                //TODO searchTerm dialog
-                //TODO performSearch
-                //TODO update ShowListFragment
-                //RET
-                callback.onButtonSelected(v.getId());
+                askForSearchTerm();
+                listener.onButtonSelected(v.getId());
                 break;
 
             default:
@@ -125,10 +128,29 @@ public class ShowAddButtonsFragment
 
 
     //=================================================//
+    //    Dialogs
+    //=================================================//
+    
+    private String askForSearchTerm()
+    {
+//        SearchShowEntryDialog termDialog = new SearchShowEntryDialog();
+//        termDialog.
+        
+        return null;
+    }
+    
+    private Show askForResultChoice()
+    {
+        
+        
+        return null;
+    }
+    
+    //=================================================//
     //    Search Asynchronously
     //=================================================//
 
-    private void performSearch(String searchTerm)
+    public void performSearch(String searchTerm)
     {
         //TODO searchTerm dialog
         new SearchTask().execute(searchTerm);
@@ -139,8 +161,8 @@ public class ShowAddButtonsFragment
             extends AsyncTask<String, Void, List<Show>>
     {
 
-        private ProgressDialog progressDialog = new ProgressDialog(
-                getActivity().getApplicationContext());
+        private ProgressDialog progressDialog = new ProgressDialog(getActivity()
+                .getApplicationContext());
 
         @Override
         protected void onPreExecute()

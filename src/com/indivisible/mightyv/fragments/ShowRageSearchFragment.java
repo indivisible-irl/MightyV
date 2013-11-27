@@ -5,6 +5,7 @@ package com.indivisible.mightyv.fragments;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.AsyncTask;
@@ -32,20 +33,46 @@ public class ShowRageSearchFragment
     private List<Show> showResults = null;
     private Context appContext;
 
+    private OnSearchResultChosenListener listener;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         TAG = this.getClass().getSimpleName();
-        appContext = this.getActivity().getApplicationContext();
+        appContext = this.getActivity();//.getApplicationContext();
     }
 
+
+    @Override
+    public void onAttach(Activity parentActivity)
+    {
+        super.onAttach(parentActivity);
+        try
+        {
+            listener = (OnSearchResultChosenListener) parentActivity;
+        }
+        catch (ClassCastException e)
+        {
+            throw new ClassCastException(parentActivity.toString()
+                    + " must implement OnShowChosenListener");
+        }
+    }
+
+    @Override
+    public void onDetach()
+    {
+        super.onDetach();
+        listener = null;
+    }
+
+
     // Parent Activity must implement our interface
-    public interface OnShowChosenListener
+    public interface OnSearchResultChosenListener
     {
 
-        public void onShowChosen(Show chosenShow);
+        public void onSearchResultChosen(Show chosenShow);
     }
 
     /**
@@ -132,9 +159,10 @@ public class ShowRageSearchFragment
             {
                 selectDialog = new SelectShowDialog(appContext, shows);
                 selectDialog.show();
+
+                Show notRealShow = new Show(99L, 99, "fake show", "doesn't exist");
+                listener.onSearchResultChosen(notRealShow);
             }
         }
-
-
     }
 }
