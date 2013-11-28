@@ -17,7 +17,8 @@ import com.indivisible.mightyv.util.MyLog;
 import com.tvrage.api.SearchXMLParser;
 
 /*
- * ASK Better to make a base class that extends Fragment and extend that?
+ * ASK Better to make a base class that extends Fragment and extend that? Use
+ * it to hold my common customisations.
  */
 
 /**
@@ -28,6 +29,10 @@ public class ShowRageSearchFragment
         extends Fragment
 {
 
+    //=================================================//
+    //    Data
+    //=================================================//
+
     private String TAG;
     private String searchTerm;
     private List<Show> showResults = null;
@@ -35,6 +40,10 @@ public class ShowRageSearchFragment
 
     private OnSearchResultChosenListener listener;
 
+
+    //=================================================//
+    //    Fragment Methods
+    //=================================================//
 
     @Override
     public void onCreate(Bundle savedInstanceState)
@@ -68,12 +77,20 @@ public class ShowRageSearchFragment
     }
 
 
+    //=================================================//
+    //    Interface / Listener
+    //=================================================//
     // Parent Activity must implement our interface
     public interface OnSearchResultChosenListener
     {
 
         public void onSearchResultChosen(Show chosenShow);
     }
+
+
+    //=================================================//
+    //    Public Methods
+    //=================================================//
 
     /**
      * Get the results from the last performed search

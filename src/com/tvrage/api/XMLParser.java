@@ -103,8 +103,7 @@ public class XMLParser
      */
     public List<?> getResults()
     {
-        throw new UnsupportedOperationException(
-                "Implement/Override in child class");
+        throw new UnsupportedOperationException("Implement/Override in child class");
     }
 
     //=================================================//
@@ -122,6 +121,7 @@ public class XMLParser
         try
         {
             // Open connection and set InputStream
+            //TODO maybe loop try a few times and give error explained as dialog
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             conn.setDoInput(true);
@@ -131,8 +131,7 @@ public class XMLParser
         catch (IOException e)
         {
             if (MyLog.error)
-                MyLog.e(TAG,
-                        "Error while getting InputStream: " + url.toString());
+                MyLog.e(TAG, "Error while getting InputStream: " + url.toString());
         }
         return inputStream;
     }
@@ -146,7 +145,6 @@ public class XMLParser
      */
     protected boolean parseXML(InputStream stream)
     {
-        throw new UnsupportedOperationException(
-                "Implement/Override in child class");
+        throw new UnsupportedOperationException("Implement/Override in child class");
     }
 }

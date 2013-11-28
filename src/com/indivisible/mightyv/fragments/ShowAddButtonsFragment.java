@@ -14,7 +14,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import com.indivisible.mightyv.R;
 import com.indivisible.mightyv.data.Show;
-import com.indivisible.mightyv.dialogs.SearchShowEntryDialog;
 import com.indivisible.mightyv.util.MyLog;
 import com.tvrage.api.SearchXMLParser;
 
@@ -130,22 +129,22 @@ public class ShowAddButtonsFragment
     //=================================================//
     //    Dialogs
     //=================================================//
-    
+
     private String askForSearchTerm()
     {
-//        SearchShowEntryDialog termDialog = new SearchShowEntryDialog();
-//        termDialog.
-        
+        //SearchShowEntryDialog termDialog = new SearchShowEntryDialog();
+        //termDialog.
+
         return null;
     }
-    
+
     private Show askForResultChoice()
     {
-        
-        
+
+
         return null;
     }
-    
+
     //=================================================//
     //    Search Asynchronously
     //=================================================//
