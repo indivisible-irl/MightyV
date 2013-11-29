@@ -38,7 +38,7 @@ public class ShowArrayAdapter
     @Override
     public View getView(int position, View convertView, ViewGroup parent)
     {
-        if (MyLog.debug) MyLog.d(TAG, "Creating Adapter View...");
+        //if (MyLog.debug) MyLog.d(TAG, "Creating Adapter View...");
 
         LayoutInflater inflater = (LayoutInflater) context
                 .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

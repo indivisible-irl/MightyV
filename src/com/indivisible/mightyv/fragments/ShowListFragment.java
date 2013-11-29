@@ -136,29 +136,6 @@ public class ShowListFragment
     }
 
 
-    //    @Override
-    //    public void onItemClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-    //    {
-    //        Show selectedShow = adapter.getItem(getSelectedItemPosition());
-    //        // Display Show details etc
-    //        Toast.makeText(getActivity().getApplicationContext(),
-    //                       "ShowListFragment short click:\n" + selectedShow.getTitle(),
-    //                       Toast.LENGTH_SHORT).show();
-    //        shortClickListener.onShowShortClick(selectedShow);
-    //    }
-    //
-    //
-    //    @Override
-    //    public boolean onItemLongClick(AdapterView<?> arg0, View arg1, int arg2, long arg3)
-    //    {
-    //        Show selectedShow = adapter.getItem(getSelectedItemPosition());
-    //        // Remove show from list
-    //        adapter.remove(selectedShow);
-    //        longClickListener.onShowLongClick(selectedShow);
-    //        return true;
-    //    }
-
-
     //=================================================//
     //    Public List Access Methods
     //=================================================//
@@ -181,7 +158,7 @@ public class ShowListFragment
     {
         adapter.add(show);
         adapter.notifyDataSetChanged();
-        //TODO notify outside add?
+        //ASK notify outside add?
     }
 
     public void removeFromList(Show show)
