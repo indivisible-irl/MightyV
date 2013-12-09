@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  TODO change to RelativeLayout -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="horizontal" >
     
+    <!--  TODO status icon (watched, upcoming etc)  -->
     
+    <LinearLayout 
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        
+        <TextView 
+            android:id="@+id/row_episodesimple_text_title"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="2"
+            />
+        <TextView 
+            android:id="@+id/row_episodesimple_text_info"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            />
+    </LinearLayout>
+    
+    
+    <!--  TODO tag icons (just simple colour icons? max 4?)  -->
 
 </LinearLayout>
