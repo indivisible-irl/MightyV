@@ -109,7 +109,7 @@ public class ShowRageSearchFragment
             if (MyLog.warn) MyLog.w(TAG, "no results, list is empty");
         }
         // return list, whatever state it's in
-        //REM test for null to indicate no search performed
+        //REM test getResults() for null to indicate no search performed
         return showResults;
     }
 
