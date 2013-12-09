@@ -240,5 +240,41 @@ public class Episode {
 		return sb.toString();
 	}
 	
+	/**
+	 * Formatted String with season and episode numbers. eg "s01e04"
+	 * @return String 
+	 */
+	public String formattedNumbers()
+	{
+	    StringBuilder sb = new StringBuilder("s");
+	    if (seasonNum == -1)
+        {
+            sb.append("00");
+        }
+        else
+        {
+            sb.append(String.format("%02d", seasonNum));
+        }
+	    sb.append("e");
+	    if (episodeNum == -1)
+        {
+            sb.append("00");
+        }
+        else
+        {
+            sb.append(String.format("%02d", episodeNum));
+        }
+	    return sb.toString();
+	}
+	
+	/**
+	 * Compact, formatted string representing the episode
+	 * @return
+	 */
+	public String formattedTitle()
+	{
+	    return String.format("%s-%s", formattedNumbers(), title);
+	}
+	
 	//=================================================//
 }
